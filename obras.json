@@ -1,5 +1,14 @@
 [
   {
+    "id": "itsy-bitsy-arana-1783980429746",
+    "titulo": "Itsy Bitsy Araña",
+    "categoria": "splash",
+    "descripcion": "Una araña muy Itsy Bitsy",
+    "img": "assets/obras/itsy-bitsy-arana-1783980429746.jpg",
+    "emoji": "",
+    "pos": "16% 48%"
+  },
+  {
     "id": "ej1",
     "titulo": "Guerrera Élfica",
     "categoria": "personajes",
