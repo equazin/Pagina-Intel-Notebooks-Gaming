@@ -1,0 +1,8 @@
+[
+  { "id": "ej1", "titulo": "Guerrera Élfica", "categoria": "personajes", "descripcion": "Diseño de personaje", "img": "", "emoji": "🧝‍♀️" },
+  { "id": "ej2", "titulo": "Escultura 3D", "categoria": "3d", "descripcion": "Modelado & render", "img": "", "emoji": "🗿" },
+  { "id": "ej3", "titulo": "Splash — Invocación", "categoria": "splash", "descripcion": "Splash art", "img": "", "emoji": "🔥" },
+  { "id": "ej4", "titulo": "Concept Ambiente", "categoria": "diseno", "descripcion": "Diseño", "img": "", "emoji": "🎨" },
+  { "id": "ej5", "titulo": "Villano", "categoria": "personajes", "descripcion": "Diseño de personaje", "img": "", "emoji": "🦹‍♂️" },
+  { "id": "ej6", "titulo": "Mecha 3D", "categoria": "3d", "descripcion": "Modelado & render", "img": "", "emoji": "🤖" }
+]

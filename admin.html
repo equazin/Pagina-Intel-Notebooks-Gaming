@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Panel de obras — Sophia Maseda</title>
+<style>
+  :root{
+    --accent:#b14bff; --accent-2:#ff5fa2;
+    --bg:#0c0910; --bg-soft:#15111c; --card:#1a1522;
+    --text:#f3eefb; --muted:#a99cba; --border:rgba(255,255,255,.09);
+    --ok:#3fd08a; --err:#ff6b6b; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 80px}
+  a{color:var(--accent)}
+  h1{font-size:1.7rem;margin:0 0 4px}
+  h2{font-size:1.15rem;margin:0 0 16px}
+  .sub{color:var(--muted);margin:0 0 28px}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:22px}
+  label{display:block;font-size:.85rem;color:var(--muted);margin:0 0 6px}
+  input,select,textarea{width:100%;padding:12px 14px;border-radius:10px;font:inherit;
+    background:var(--bg-soft);color:var(--text);border:1px solid var(--border);margin-bottom:16px}
+  textarea{resize:vertical;min-height:80px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:540px){ .row{grid-template-columns:1fr} }
+  button{padding:12px 22px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;border:none;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  button.ghost{background:var(--bg-soft);border:1px solid var(--border);color:var(--text)}
+  button.danger{background:transparent;border:1px solid var(--err);color:var(--err);padding:7px 14px;font-size:.85rem}
+  .status{margin-top:14px;font-size:.92rem;min-height:1.2em}
+  .status.ok{color:var(--ok)} .status.err{color:var(--err)}
+  .list{display:grid;gap:12px}
+  .item{display:flex;align-items:center;gap:14px;background:var(--bg-soft);border:1px solid var(--border);
+    border-radius:12px;padding:10px 12px}
+  .thumb{width:54px;height:54px;border-radius:8px;background:var(--card) center/cover no-repeat;
+    display:grid;place-items:center;font-size:1.6rem;flex-shrink:0}
+  .item .meta{flex:1;min-width:0}
+  .item .meta b{display:block;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .meta small{color:var(--muted)}
+  .hidden{display:none}
+  .hint{font-size:.82rem;color:var(--muted);margin:-8px 0 16px}
+  .cats{color:var(--muted);font-size:.8rem}
+  code{background:var(--bg-soft);padding:1px 6px;border-radius:5px;font-size:.85em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Panel de obras 🎨</h1>
+  <p class="sub">Cargá, editá y borrá las obras de tu portfolio. Los cambios se publican solos.</p>
+
+  <!-- ==================== LOGIN ==================== -->
+  <section class="panel" id="loginPanel">
+    <h2>Acceso</h2>
+    <label>Token de acceso de GitHub</label>
+    <input type="password" id="token" placeholder="ghp_... o github_pat_...">
+    <p class="hint">Se guarda solo en <b>este navegador</b> (no se comparte). Si usás una compu ajena, usá "Olvidar token" al terminar.</p>
+    <label style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text)">
+      <input type="checkbox" id="remember" checked style="width:auto;margin:0"> Recordarme en este navegador
+    </label>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <button id="loginBtn">Entrar</button>
+      <a href="#ayuda"><button type="button" class="ghost">¿Cómo saco el token?</button></a>
+    </div>
+    <div class="status" id="loginStatus"></div>
+  </section>
+
+  <!-- ==================== APP ==================== -->
+  <div id="app" class="hidden">
+    <section class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="margin:0">Nueva obra</h2>
+        <button class="ghost" id="logoutBtn" style="padding:7px 14px;font-size:.85rem">Olvidar token</button>
+      </div>
+      <form id="addForm">
+        <label>Imagen de la obra</label>
+        <input type="file" id="file" accept="image/*" required>
+        <div class="row">
+          <div>
+            <label>Título</label>
+            <input type="text" id="titulo" placeholder="Ej: Guerrera Élfica" required>
+          </div>
+          <div>
+            <label>Categoría</label>
+            <select id="categoria">
+              <option value="personajes">Personajes</option>
+              <option value="3d">3D</option>
+              <option value="splash">Splash Arts</option>
+              <option value="diseno">Diseño</option>
+            </select>
+          </div>
+        </div>
+        <label>Descripción (opcional)</label>
+        <input type="text" id="descripcion" placeholder="Ej: Diseño de personaje">
+        <button type="submit" id="submitBtn">Publicar obra</button>
+        <div class="status" id="addStatus"></div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Obras cargadas</h2>
+      <div class="list" id="list"></div>
+      <div class="status" id="listStatus"></div>
+    </section>
+  </div>
+
+  <!-- ==================== AYUDA ==================== -->
+  <section class="panel" id="ayuda">
+    <h2>¿Cómo obtener tu token? (1 sola vez)</h2>
+    <ol style="color:var(--muted);padding-left:20px;line-height:1.8">
+      <li>Entrá a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> (logueada con tu cuenta).</li>
+      <li>En <b>Token name</b> poné cualquier nombre (ej: "Panel portfolio").</li>
+      <li>En <b>Repository access</b> → <b>Only select repositories</b> → elegí <code>Pagina-Intel-Notebooks-Gaming</code>.</li>
+      <li>En <b>Permissions</b> → <b>Repository permissions</b> → <b>Contents</b> → poné <b>Read and write</b>.</li>
+      <li>Clic en <b>Generate token</b>, copialo y pegalo arriba. ¡Listo!</li>
+    </ol>
+    <p class="hint">El token es como una llave: da acceso solo a este repositorio. No lo compartas.</p>
+  </section>
+</div>
+
+<script>
+  // ====== CONFIG ======
+  const OWNER  = 'equazin';
+  const REPO   = 'Pagina-Intel-Notebooks-Gaming';
+  const BRANCH = 'main';
+  const API    = 'https://api.github.com';
+
+  const $ = id => document.getElementById(id);
+  let TOKEN = localStorage.getItem('gh_token') || '';
+
+  // ---- helpers ----
+  const b64encode = str => btoa(unescape(encodeURIComponent(str)));
+  const b64decode = str => decodeURIComponent(escape(atob(str.replace(/\s/g,''))));
+  const slugify = s => (s||'obra').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+                        .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,40) || 'obra';
+  const catName = c => ({personajes:'Personajes','3d':'3D',splash:'Splash Arts',diseno:'Diseño'}[c]||c);
+
+  function gh(path, opts={}) {
+    return fetch(API + path, {
+      ...opts,
+      headers: {
+        'Authorization': 'Bearer ' + TOKEN,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        ...(opts.headers||{})
+      }
+    });
+  }
+  function fileToB64(file){
+    return new Promise((res,rej)=>{ const r=new FileReader();
+      r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+  }
+  function setStatus(el, msg, type){ el.className='status'+(type?' '+type:''); el.textContent=msg; }
+
+  async function getObras(){
+    const res = await gh(`/repos/${OWNER}/${REPO}/contents/obras.json?ref=${BRANCH}&t=${Date.now()}`);
+    if(res.status===404) return { list:[], sha:null };
+    if(!res.ok) throw new Error((await res.json()).message || 'Error leyendo obras.json');
+    const data = await res.json();
+    return { list: JSON.parse(b64decode(data.content)), sha: data.sha };
+  }
+  async function putFile(path, b64, message, sha){
+    const body = { message, content:b64, branch:BRANCH };
+    if(sha) body.sha = sha;
+    return gh(`/repos/${OWNER}/${REPO}/contents/${path}`, { method:'PUT', body: JSON.stringify(body) });
+  }
+
+  // ====== LOGIN ======
+  async function doLogin(){
+    TOKEN = $('token').value.trim();
+    if(!TOKEN){ return setStatus($('loginStatus'),'Pegá tu token primero.','err'); }
+    setStatus($('loginStatus'),'Verificando...');
+    try{
+      const res = await gh(`/repos/${OWNER}/${REPO}`);
+      if(!res.ok){ throw new Error(res.status===401?'Token inválido o vencido.':'El token no tiene acceso a este repo.'); }
+      if($('remember').checked) localStorage.setItem('gh_token', TOKEN);
+      showApp();
+    }catch(e){ setStatus($('loginStatus'), e.message, 'err'); }
+  }
+  function showApp(){
+    $('loginPanel').classList.add('hidden');
+    $('ayuda').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    loadList();
+  }
+  function logout(){
+    localStorage.removeItem('gh_token'); TOKEN=''; $('token').value='';
+    $('app').classList.add('hidden');
+    $('loginPanel').classList.remove('hidden'); $('ayuda').classList.remove('hidden');
+    setStatus($('loginStatus'),'Token olvidado.','ok');
+  }
+
+  // ====== AGREGAR ======
+  async function addObra(e){
+    e.preventDefault();
+    const file=$('file').files[0], titulo=$('titulo').value.trim(),
+          categoria=$('categoria').value, descripcion=$('descripcion').value.trim();
+    if(!file||!titulo) return;
+    $('submitBtn').disabled=true;
+    try{
+      setStatus($('addStatus'),'Subiendo imagen...');
+      const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+      const id=slugify(titulo)+'-'+Date.now();
+      const imgPath=`assets/obras/${id}.${ext}`;
+      let res=await putFile(imgPath, await fileToB64(file), `Agregar obra: ${titulo}`);
+      if(!res.ok) throw new Error((await res.json()).message);
+
+      setStatus($('addStatus'),'Guardando en la galería...');
+      const {list,sha}=await getObras();
+      list.unshift({ id, titulo, categoria, descripcion, img:imgPath, emoji:'' });
+      res=await putFile('obras.json', b64encode(JSON.stringify(list,null,2)), `Galería: + ${titulo}`, sha);
+      if(!res.ok) throw new Error((await res.json()).message);
+
+      setStatus($('addStatus'),'✅ ¡Publicada! Aparece en la web en ~1 minuto.','ok');
+      $('addForm').reset();
+      loadList();
+    }catch(err){ setStatus($('addStatus'),'Error: '+err.message,'err'); }
+    finally{ $('submitBtn').disabled=false; }
+  }
+
+  // ====== LISTAR / BORRAR ======
+  async function loadList(){
+    setStatus($('listStatus'),'Cargando...');
+    try{
+      const {list}=await getObras();
+      const cont=$('list'); cont.innerHTML='';
+      if(!list.length){ setStatus($('listStatus'),'Todavía no hay obras. ¡Cargá la primera!'); return; }
+      setStatus($('listStatus'),'');
+      list.forEach(o=>{
+        const div=document.createElement('div'); div.className='item';
+        const thumb=o.img
+          ? `<div class="thumb" style="background-image:url('${o.img}?t=${Date.now()}')"></div>`
+          : `<div class="thumb">${o.emoji||'🎨'}</div>`;
+        div.innerHTML=`${thumb}
+          <div class="meta"><b>${o.titulo||''}</b><small>${catName(o.categoria)}${o.descripcion?' · '+o.descripcion:''}</small></div>`;
+        const btn=document.createElement('button'); btn.className='danger'; btn.textContent='Borrar';
+        btn.onclick=()=>delObra(o.id);
+        div.appendChild(btn); cont.appendChild(div);
+      });
+    }catch(err){ setStatus($('listStatus'),'Error: '+err.message,'err'); }
+  }
+  async function delObra(id){
+    if(!confirm('¿Borrar esta obra? No se puede deshacer.')) return;
+    setStatus($('listStatus'),'Borrando...');
+    try{
+      const {list,sha}=await getObras();
+      const obra=list.find(o=>o.id===id);
+      const nuevo=list.filter(o=>o.id!==id);
+      let res=await putFile('obras.json', b64encode(JSON.stringify(nuevo,null,2)), `Galería: - ${id}`, sha);
+      if(!res.ok) throw new Error((await res.json()).message);
+      if(obra&&obra.img&&obra.img.startsWith('assets/obras/')){
+        const ir=await gh(`/repos/${OWNER}/${REPO}/contents/${obra.img}?ref=${BRANCH}`);
+        if(ir.ok){ const id2=(await ir.json()).sha;
+          await gh(`/repos/${OWNER}/${REPO}/contents/${obra.img}`,{method:'DELETE',
+            body:JSON.stringify({message:`Borrar imagen ${obra.img}`,sha:id2,branch:BRANCH})}); }
+      }
+      setStatus($('listStatus'),'🗑️ Borrada.','ok');
+      loadList();
+    }catch(err){ setStatus($('listStatus'),'Error: '+err.message,'err'); }
+  }
+
+  // ====== INIT ======
+  $('loginBtn').onclick=doLogin;
+  $('logoutBtn').onclick=logout;
+  $('addForm').addEventListener('submit', addObra);
+  $('token').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+  if(TOKEN){ $('token').value=TOKEN; showApp(); }
+</script>
+</body>
+</html>

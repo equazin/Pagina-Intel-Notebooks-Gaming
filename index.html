@@ -234,24 +234,11 @@
       <button class="filter" data-f="diseno">Diseño</button>
     </div>
 
-    <!-- ======================================================
-         CÓMO PONER TUS IMÁGENES REALES:
-         En cada .art, agregá al div:
-           style="background-image:url('assets/obra1.jpg')"
-         y borrá el <div class="ph">emoji</div> de adentro.
-         Guardá tus imágenes en una carpeta /assets del repo.
-         ====================================================== -->
-    <div class="gallery">
-      <div class="art" data-cat="personajes"><div class="ph">🧝‍♀️</div><div class="cap"><h4>Guerrera Élfica</h4><span>Diseño de personaje</span></div></div>
-      <div class="art" data-cat="3d"><div class="ph">🗿</div><div class="cap"><h4>Escultura 3D</h4><span>Modelado &amp; render</span></div></div>
-      <div class="art" data-cat="splash"><div class="ph">🔥</div><div class="cap"><h4>Splash — Invocación</h4><span>Splash art</span></div></div>
-      <div class="art" data-cat="diseno"><div class="ph">🎨</div><div class="cap"><h4>Concept Ambiente</h4><span>Diseño</span></div></div>
-      <div class="art" data-cat="personajes"><div class="ph">🦹‍♂️</div><div class="cap"><h4>Villano</h4><span>Diseño de personaje</span></div></div>
-      <div class="art" data-cat="3d"><div class="ph">🤖</div><div class="cap"><h4>Mecha 3D</h4><span>Modelado &amp; render</span></div></div>
-      <div class="art" data-cat="splash"><div class="ph">⚔️</div><div class="cap"><h4>Splash — Batalla</h4><span>Splash art</span></div></div>
-      <div class="art" data-cat="diseno"><div class="ph">🏰</div><div class="cap"><h4>Prop / Entorno</h4><span>Diseño</span></div></div>
-      <div class="art" data-cat="personajes"><div class="ph">🧚</div><div class="cap"><h4>Hada del Bosque</h4><span>Diseño de personaje</span></div></div>
-    </div>
+    <!-- La galería se carga sola desde obras.json (se administra desde /admin) -->
+    <div class="gallery" id="gallery"></div>
+    <p id="gallery-empty" class="section-sub" style="display:none;text-align:center;margin-top:20px">
+      Todavía no hay obras cargadas. Cargalas desde el <a href="admin.html" style="color:var(--accent)">panel de administración</a>.
+    </p>
   </section>
 
   <!-- ===================== HERRAMIENTAS ===================== -->
@@ -306,26 +293,51 @@
   </section>
 
   <footer class="foot">
-    <div class="wrap">© <span id="year"></span> Sophia Maseda — Todos los derechos reservados.</div>
+    <div class="wrap">© <span id="year"></span> Sophia Maseda — Todos los derechos reservados. · <a href="admin.html" style="color:var(--muted)">Administrar</a></div>
   </footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // filtros de galería
-  const filters = document.querySelectorAll('.filter');
-  const arts = document.querySelectorAll('.art');
-  filters.forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      filters.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const f = btn.dataset.f;
-      arts.forEach(a=>{
-        const show = f==='all' || a.dataset.cat===f;
-        a.style.display = show ? '' : 'none';
+  // ===== Galería dinámica (se carga desde obras.json, editable en /admin) =====
+  const gallery = document.getElementById('gallery');
+  const emptyMsg = document.getElementById('gallery-empty');
+  const escapeHtml = (s='') => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function renderGallery(obras){
+    gallery.innerHTML = '';
+    if(!obras.length){ emptyMsg.style.display = 'block'; return; }
+    emptyMsg.style.display = 'none';
+    obras.forEach(o=>{
+      const el = document.createElement('div');
+      el.className = 'art';
+      el.dataset.cat = o.categoria || '';
+      if(o.img){ el.style.backgroundImage = `url('${o.img}')`; }
+      const inner = o.img ? '' : `<div class="ph">${escapeHtml(o.emoji || '🎨')}</div>`;
+      el.innerHTML = `${inner}<div class="cap"><h4>${escapeHtml(o.titulo || '')}</h4><span>${escapeHtml(o.descripcion || '')}</span></div>`;
+      gallery.appendChild(el);
+    });
+  }
+
+  function setupFilters(){
+    const filters = document.querySelectorAll('.filter');
+    filters.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        filters.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.f;
+        document.querySelectorAll('#gallery .art').forEach(a=>{
+          a.style.display = (f==='all' || a.dataset.cat===f) ? '' : 'none';
+        });
       });
     });
-  });
+  }
+
+  fetch('obras.json?t=' + Date.now())
+    .then(r => r.ok ? r.json() : [])
+    .then(data => renderGallery(Array.isArray(data) ? data : []))
+    .catch(() => renderGallery([]))
+    .finally(setupFilters);
 
   // reveal on scroll
   const io = new IntersectionObserver((entries)=>{
