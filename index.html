@@ -48,7 +48,8 @@
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
-  section{padding:96px 0}
+  /* section.wrap gana en especificidad a .wrap para no perder el padding vertical */
+  section.wrap{padding-top:96px;padding-bottom:96px}
 
   body::before{
     content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
@@ -73,7 +74,7 @@
   @media(max-width:760px){ nav.links{display:none} }
 
   /* ===================== HERO ===================== */
-  .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:110px}
+  section.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:120px;padding-bottom:70px}
   .avatar{
     width:138px;height:138px;border-radius:50%;
     background:linear-gradient(135deg,var(--accent),var(--accent-2));
@@ -140,7 +141,10 @@
   /* lightbox */
   .lb{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.92);display:none;place-items:center;padding:24px;cursor:zoom-out}
   .lb.open{display:grid}
-  .lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .lb img{max-width:92vw;max-height:84vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6);
+    cursor:zoom-in;transform-origin:center center;transition:transform .15s ease-out;touch-action:none;user-select:none;-webkit-user-drag:none}
+  .lb.zoomed img{cursor:grab}
+  .lb .lb-hint{position:absolute;top:18px;left:0;right:0;text-align:center;color:#c9b8e6;font-size:.8rem;pointer-events:none}
   .lb .lb-cap{position:absolute;left:0;right:0;bottom:22px;text-align:center;color:#fff;font-size:1rem;padding:0 20px}
   .lb .lb-cap small{display:block;color:#c9b8e6;font-size:.85rem;margin-top:2px}
   .lb .lb-close{position:absolute;top:16px;right:24px;color:#fff;font-size:2.2rem;line-height:1;cursor:pointer;opacity:.85}
@@ -319,6 +323,7 @@
   <!-- Lightbox para ver las obras en grande -->
   <div class="lb" id="lightbox" aria-hidden="true">
     <span class="lb-close" id="lbClose" aria-label="Cerrar">&times;</span>
+    <div class="lb-hint">Rueda o clic para hacer zoom · arrastrá para mover · Esc para cerrar</div>
     <img id="lbImg" alt="">
     <div class="lb-cap" id="lbCap"></div>
   </div>
@@ -341,6 +346,7 @@
       el.dataset.cat = o.categoria || '';
       if(o.img){
         el.style.backgroundImage = `url('${o.img}')`;
+        el.style.backgroundPosition = o.pos || 'center';
         el.addEventListener('click', ()=> openLightbox(o.img, o.titulo, o.descripcion));
       }
       const inner = o.img ? '' : `<div class="ph">${escapeHtml(o.emoji || '🎨')}</div>`;
@@ -349,17 +355,56 @@
     });
   }
 
-  // Lightbox
+  // Lightbox con zoom + pan
   const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  let zScale=1, zX=0, zY=0, panning=false, sx=0, sy=0, moved=false;
+
+  function applyZoom(){
+    lbImg.style.transform = `translate(${zX}px,${zY}px) scale(${zScale})`;
+    lb.classList.toggle('zoomed', zScale>1);
+  }
+  function resetZoom(){ zScale=1; zX=0; zY=0; lbImg.style.transition='transform .15s ease-out'; applyZoom(); }
+
   function openLightbox(img, titulo, desc){
-    document.getElementById('lbImg').src = img;
+    lbImg.src = img;
     document.getElementById('lbCap').innerHTML =
       `${escapeHtml(titulo||'')}${desc ? `<small>${escapeHtml(desc)}</small>` : ''}`;
+    resetZoom();
     lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
   }
-  function closeLightbox(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); document.getElementById('lbImg').src=''; }
+  function closeLightbox(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; resetZoom(); }
+
   lb.addEventListener('click', closeLightbox);
-  document.getElementById('lbImg').addEventListener('click', e=>e.stopPropagation());
+
+  // clic en la imagen: alterna acercar / restablecer (no cierra)
+  lbImg.addEventListener('click', e=>{
+    e.stopPropagation();
+    if(moved){ moved=false; return; }
+    lbImg.style.transition='transform .15s ease-out';
+    if(zScale===1){ zScale=2.2; } else { zX=0; zY=0; zScale=1; }
+    applyZoom();
+  });
+  // rueda del mouse: zoom continuo
+  lbImg.addEventListener('wheel', e=>{
+    e.preventDefault(); e.stopPropagation();
+    lbImg.style.transition='none';
+    zScale = Math.min(5, Math.max(1, zScale - e.deltaY*0.0015*zScale));
+    if(zScale===1){ zX=0; zY=0; }
+    applyZoom();
+  }, {passive:false});
+  // arrastrar para mover cuando está acercada
+  lbImg.addEventListener('pointerdown', e=>{
+    if(zScale<=1) return;
+    e.stopPropagation(); panning=true; moved=false;
+    sx=e.clientX-zX; sy=e.clientY-zY;
+    lbImg.style.transition='none'; lbImg.setPointerCapture(e.pointerId);
+  });
+  lbImg.addEventListener('pointermove', e=>{
+    if(!panning) return;
+    zX=e.clientX-sx; zY=e.clientY-sy; moved=true; applyZoom();
+  });
+  lbImg.addEventListener('pointerup', ()=>{ panning=false; });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
 
   // Cargar "Sobre mí" desde contenido.json (editable en /admin)

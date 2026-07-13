@@ -45,6 +45,11 @@
   .item .meta b{display:block;font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .item .meta small{color:var(--muted)}
   .hidden{display:none}
+  .cropper{position:relative;width:200px;aspect-ratio:3/4;border-radius:12px;overflow:hidden;
+    border:1px solid var(--border);cursor:grab;background:var(--bg-soft);touch-action:none;margin-bottom:8px}
+  .cropper.grabbing{cursor:grabbing}
+  .cropper img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;
+    user-select:none;-webkit-user-drag:none;pointer-events:none}
   .hint{font-size:.82rem;color:var(--muted);margin:-8px 0 16px}
   .cats{color:var(--muted);font-size:.8rem}
   code{background:var(--bg-soft);padding:1px 6px;border-radius:5px;font-size:.85em}
@@ -93,6 +98,10 @@
       <form id="addForm">
         <label>Imagen de la obra</label>
         <input type="file" id="file" accept="image/*" required>
+        <div id="cropWrap" class="hidden">
+          <label>Encuadre (así se ve en la galería — arrastrá para elegir qué parte se muestra)</label>
+          <div class="cropper" id="cropper"><img id="cropImg" alt="Vista previa"></div>
+        </div>
         <div class="row">
           <div>
             <label>Título</label>
@@ -329,12 +338,13 @@
 
       setStatus($('addStatus'),'Guardando en la galería...');
       const {list,sha}=await getObras();
-      list.unshift({ id, titulo, categoria, descripcion, img:imgPath, emoji:'' });
+      list.unshift({ id, titulo, categoria, descripcion, img:imgPath, emoji:'', pos:`${Math.round(cropPos.x)}% ${Math.round(cropPos.y)}%` });
       res=await putFile('obras.json', b64encode(JSON.stringify(list,null,2)), `Galería: + ${titulo}`, sha);
       if(!res.ok) throw new Error((await res.json()).message);
 
       setStatus($('addStatus'),'✅ ¡Publicada! Aparece en la web en ~1 minuto.','ok');
       $('addForm').reset();
+      $('cropWrap').classList.add('hidden'); cropPos={x:50,y:50};
       loadList();
     }catch(err){ setStatus($('addStatus'),'Error: '+err.message,'err'); }
     finally{ $('submitBtn').disabled=false; }
@@ -351,7 +361,7 @@
       list.forEach(o=>{
         const div=document.createElement('div'); div.className='item';
         const thumb=o.img
-          ? `<div class="thumb" style="background-image:url('${o.img}?t=${Date.now()}')"></div>`
+          ? `<div class="thumb" style="background-image:url('${o.img}?t=${Date.now()}');background-position:${o.pos||'center'}"></div>`
           : `<div class="thumb">${o.emoji||'🎨'}</div>`;
         div.innerHTML=`${thumb}
           <div class="meta"><b>${o.titulo||''}</b><small>${catName(o.categoria)}${o.descripcion?' · '+o.descripcion:''}</small></div>`;
@@ -380,6 +390,26 @@
       loadList();
     }catch(err){ setStatus($('listStatus'),'Error: '+err.message,'err'); }
   }
+
+  // ====== ENCUADRE (preview + arrastrar) ======
+  let cropPos={x:50,y:50};
+  const cropper=$('cropper'), cropImg=$('cropImg');
+  function applyCrop(){ cropImg.style.objectPosition = cropPos.x+'% '+cropPos.y+'%'; }
+  $('file').addEventListener('change', e=>{
+    const f=e.target.files[0];
+    if(!f){ $('cropWrap').classList.add('hidden'); return; }
+    const r=new FileReader();
+    r.onload=()=>{ cropImg.src=r.result; cropPos={x:50,y:50}; applyCrop(); $('cropWrap').classList.remove('hidden'); };
+    r.readAsDataURL(f);
+  });
+  let cDrag=false, cLastX=0, cLastY=0;
+  cropper.addEventListener('pointerdown', e=>{ cDrag=true; cLastX=e.clientX; cLastY=e.clientY;
+    cropper.classList.add('grabbing'); cropper.setPointerCapture(e.pointerId); });
+  cropper.addEventListener('pointermove', e=>{ if(!cDrag) return;
+    const dx=e.clientX-cLastX, dy=e.clientY-cLastY; cLastX=e.clientX; cLastY=e.clientY;
+    cropPos.x=Math.min(100,Math.max(0, cropPos.x - dx*0.4));
+    cropPos.y=Math.min(100,Math.max(0, cropPos.y - dy*0.4)); applyCrop(); });
+  cropper.addEventListener('pointerup', ()=>{ cDrag=false; cropper.classList.remove('grabbing'); });
 
   // ====== INIT ======
   $('setupBtn').onclick=doSetup;
