@@ -116,6 +116,16 @@
     </section>
 
     <section class="panel">
+      <h2>Sobre mí</h2>
+      <label>Título de la sección</label>
+      <input type="text" id="aboutTitulo" placeholder="Sobre mí">
+      <label>Texto (separá los párrafos con una línea en blanco)</label>
+      <textarea id="aboutTexto" style="min-height:150px" placeholder="Contá quién sos y qué hacés..."></textarea>
+      <button id="aboutSaveBtn">Guardar Sobre mí</button>
+      <div class="status" id="aboutStatus"></div>
+    </section>
+
+    <section class="panel">
       <h2>Obras cargadas</h2>
       <div class="list" id="list"></div>
       <div class="status" id="listStatus"></div>
@@ -183,6 +193,39 @@
     if(sha) body.sha = sha;
     return gh(`/repos/${OWNER}/${REPO}/contents/${path}`, { method:'PUT', body: JSON.stringify(body) });
   }
+  async function getContenido(){
+    const res = await gh(`/repos/${OWNER}/${REPO}/contents/contenido.json?ref=${BRANCH}&t=${Date.now()}`);
+    if(res.status===404) return { data:{}, sha:null };
+    if(!res.ok) throw new Error((await res.json()).message || 'Error leyendo contenido.json');
+    const d = await res.json();
+    return { data: JSON.parse(b64decode(d.content)), sha: d.sha };
+  }
+
+  // ====== SOBRE MÍ ======
+  async function loadAbout(){
+    try{
+      const {data}=await getContenido();
+      const a=(data&&data.about)||{};
+      $('aboutTitulo').value=a.titulo||'Sobre mí';
+      $('aboutTexto').value=(a.parrafos||[]).join('\n\n');
+    }catch(e){ setStatus($('aboutStatus'),'No se pudo cargar: '+e.message,'err'); }
+  }
+  async function saveAbout(){
+    $('aboutSaveBtn').disabled=true;
+    try{
+      setStatus($('aboutStatus'),'Guardando...');
+      const {data,sha}=await getContenido();
+      const contenido=data||{};
+      contenido.about={
+        titulo:$('aboutTitulo').value.trim()||'Sobre mí',
+        parrafos:$('aboutTexto').value.split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean)
+      };
+      const res=await putFile('contenido.json', b64encode(JSON.stringify(contenido,null,2)), 'Actualizar Sobre mí', sha);
+      if(!res.ok) throw new Error((await res.json()).message);
+      setStatus($('aboutStatus'),'✅ Guardado. Se ve en la web en ~1 minuto.','ok');
+    }catch(e){ setStatus($('aboutStatus'),'Error: '+e.message,'err'); }
+    finally{ $('aboutSaveBtn').disabled=false; }
+  }
 
   // ====== CIFRADO DEL TOKEN CON PIN (Web Crypto: PBKDF2 + AES-GCM) ======
   const enc=new TextEncoder(), dec=new TextDecoder();
@@ -222,6 +265,7 @@
     $('ayuda').classList.add('hidden');
     $('app').classList.remove('hidden');
     loadList();
+    loadAbout();
   }
   function lock(){ TOKEN=''; showLogin(); }  // "Salir": borra el token de memoria, deja el cifrado
 
@@ -338,6 +382,7 @@
   $('unlockBtn').onclick=doUnlock;
   $('resetBtn').onclick=doReset;
   $('logoutBtn').onclick=lock;
+  $('aboutSaveBtn').onclick=saveAbout;
   $('addForm').addEventListener('submit', addObra);
   $('pin').addEventListener('keydown', e=>{ if(e.key==='Enter') doUnlock(); });
   $('pinNew2').addEventListener('keydown', e=>{ if(e.key==='Enter') doSetup(); });
