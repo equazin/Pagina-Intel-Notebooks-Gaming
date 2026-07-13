@@ -3,38 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tu Nombre — Portfolio</title>
-<meta name="description" content="Portfolio personal de Tu Nombre. Diseño, desarrollo y proyectos.">
+<title>Sophia Maseda — Artista Digital &amp; 3D</title>
+<meta name="description" content="Portfolio de Sophia Maseda: diseño de personajes, arte 3D, splash arts e ilustración.">
 
-<!-- Open Graph (para que se vea lindo al compartir en WhatsApp/redes) -->
-<meta property="og:title" content="Tu Nombre — Portfolio">
-<meta property="og:description" content="Diseño, desarrollo y proyectos.">
+<!-- Open Graph (se ve lindo al compartir en redes) -->
+<meta property="og:title" content="Sophia Maseda — Artista Digital &amp; 3D">
+<meta property="og:description" content="Diseño de personajes, arte 3D, splash arts e ilustración.">
 <meta property="og:type" content="website">
 
 <style>
   /* ===========================================================
-     PALETA Y VARIABLES  (cambiá estos valores y cambia todo)
+     PALETA  ·  cambiá estos valores y cambia todo el sitio
      =========================================================== */
   :root{
-    --accent:#6c5ce7;         /* color principal */
-    --accent-2:#00cec9;       /* color secundario para gradientes */
-    --bg:#0e0e14;
-    --bg-soft:#16161f;
-    --card:#1b1b27;
-    --text:#eef0f6;
-    --muted:#9aa0b4;
-    --border:rgba(255,255,255,.08);
+    --accent:#b14bff;         /* violeta principal */
+    --accent-2:#ff5fa2;       /* rosa secundario para gradientes */
+    --bg:#0c0910;
+    --bg-soft:#15111c;
+    --card:#1a1522;
+    --text:#f3eefb;
+    --muted:#a99cba;
+    --border:rgba(255,255,255,.09);
     --radius:18px;
-    --max:1080px;
-    --shadow:0 20px 60px -20px rgba(0,0,0,.6);
+    --max:1120px;
+    --shadow:0 24px 70px -25px rgba(140,40,220,.55);
     font-synthesis:none;
   }
-  /* modo claro automático segun el sistema (opcional) */
   @media (prefers-color-scheme: light){
     :root[data-theme="auto"]{
-      --bg:#f6f7fb; --bg-soft:#ffffff; --card:#ffffff;
-      --text:#14141c; --muted:#5a6072; --border:rgba(0,0,0,.08);
-      --shadow:0 20px 60px -25px rgba(20,20,40,.25);
+      --bg:#faf7ff; --bg-soft:#ffffff; --card:#ffffff;
+      --text:#1a1320; --muted:#6a5f78; --border:rgba(0,0,0,.08);
+      --shadow:0 24px 70px -30px rgba(140,40,220,.3);
     }
   }
 
@@ -43,69 +42,63 @@
   body{
     margin:0;
     font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
+    background:var(--bg);color:var(--text);line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
   }
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
   .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
   section{padding:96px 0}
 
-  /* fondo con glow decorativo */
   body::before{
     content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:
-      radial-gradient(600px 400px at 15% -5%, color-mix(in srgb,var(--accent) 30%, transparent), transparent 60%),
-      radial-gradient(600px 400px at 90% 10%, color-mix(in srgb,var(--accent-2) 22%, transparent), transparent 60%);
+      radial-gradient(650px 450px at 12% -5%, color-mix(in srgb,var(--accent) 32%, transparent), transparent 60%),
+      radial-gradient(650px 450px at 92% 8%, color-mix(in srgb,var(--accent-2) 26%, transparent), transparent 60%);
   }
 
   /* ===================== NAV ===================== */
   header.nav{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(12px);
+    position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
     background:color-mix(in srgb,var(--bg) 72%, transparent);
     border-bottom:1px solid var(--border);
   }
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
   .logo{font-weight:800;letter-spacing:.3px}
-  .logo span{color:var(--accent)}
+  .logo span{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   nav.links{display:flex;gap:26px}
   nav.links a{color:var(--muted);font-weight:500;font-size:.95rem;transition:color .2s}
   nav.links a:hover{color:var(--text)}
-  .nav-cta{
-    padding:9px 18px;border-radius:999px;font-weight:600;font-size:.9rem;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;
-  }
-  @media(max-width:720px){ nav.links{display:none} }
+  .nav-cta{padding:9px 18px;border-radius:999px;font-weight:600;font-size:.9rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+  @media(max-width:760px){ nav.links{display:none} }
 
   /* ===================== HERO ===================== */
   .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:110px}
   .avatar{
-    width:132px;height:132px;border-radius:50%;
+    width:138px;height:138px;border-radius:50%;
     background:linear-gradient(135deg,var(--accent),var(--accent-2));
     display:grid;place-items:center;font-size:3rem;font-weight:800;color:#fff;
-    box-shadow:var(--shadow);margin-bottom:26px;
+    box-shadow:var(--shadow);margin-bottom:26px;overflow:hidden;
   }
-  .hero h1{font-size:clamp(2.2rem,6vw,3.6rem);margin:0 0 8px;line-height:1.1;letter-spacing:-1px}
-  .hero .role{color:var(--accent);font-weight:600;font-size:1.15rem;margin-bottom:14px}
-  .hero p{max-width:560px;color:var(--muted);font-size:1.08rem;margin:0 auto 30px}
+  /* Para foto real: reemplazá el "SM" por  <img src="assets/foto.jpg" alt="Sophia Maseda"> */
+  .hero h1{font-size:clamp(2.2rem,6vw,3.8rem);margin:0 0 8px;line-height:1.1;letter-spacing:-1px}
+  .hero .role{
+    font-weight:600;font-size:1.15rem;margin-bottom:14px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .hero p{max-width:580px;color:var(--muted);font-size:1.08rem;margin:0 auto 30px}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-  .btn{
-    padding:13px 26px;border-radius:999px;font-weight:600;font-size:.98rem;
-    border:1px solid var(--border);transition:transform .18s,box-shadow .18s;
-  }
+  .btn{padding:13px 26px;border-radius:999px;font-weight:600;font-size:.98rem;border:1px solid var(--border);transition:transform .18s}
   .btn:hover{transform:translateY(-2px)}
   .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border:none;box-shadow:var(--shadow)}
   .btn.ghost{background:var(--card)}
 
-  /* ===================== SECCIONES ===================== */
+  /* ===================== TÍTULOS ===================== */
   .section-title{font-size:2rem;margin:0 0 6px;letter-spacing:-.5px}
-  .section-title .dot{color:var(--accent)}
+  .section-title .dot{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .section-sub{color:var(--muted);margin:0 0 40px}
 
+  /* ===================== SOBRE MÍ ===================== */
   .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center}
   @media(max-width:760px){ .about-grid{grid-template-columns:1fr} }
   .about p{color:var(--muted);font-size:1.05rem}
@@ -114,39 +107,48 @@
   .stat b{display:block;font-size:1.9rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .stat span{color:var(--muted);font-size:.88rem}
 
-  /* proyectos */
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-  @media(max-width:860px){ .grid{grid-template-columns:1fr 1fr} }
-  @media(max-width:560px){ .grid{grid-template-columns:1fr} }
-  .card{
-    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-    overflow:hidden;transition:transform .2s,border-color .2s;display:flex;flex-direction:column;
-  }
-  .card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent) 50%,transparent)}
-  .card .thumb{aspect-ratio:16/10;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-size:2.4rem}
-  .card .body{padding:20px}
-  .card h3{margin:0 0 6px;font-size:1.15rem}
-  .card p{margin:0 0 14px;color:var(--muted);font-size:.94rem}
-  .tags{display:flex;gap:8px;flex-wrap:wrap}
-  .tag{font-size:.75rem;color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);padding:4px 10px;border-radius:999px}
+  /* ===================== FILTROS GALERÍA ===================== */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+  .filter{padding:8px 18px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s}
+  .filter:hover{color:var(--text)}
+  .filter.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent}
 
-  /* skills */
+  /* ===================== GALERÍA ===================== */
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:860px){ .gallery{grid-template-columns:1fr 1fr} }
+  @media(max-width:560px){ .gallery{grid-template-columns:1fr} }
+  .art{
+    position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:3/4;
+    border:1px solid var(--border);cursor:pointer;transition:transform .22s,box-shadow .22s;
+    background-size:cover;background-position:center;
+  }
+  .art:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+  .art .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem;background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 22%,var(--card)),var(--card))}
+  .art .cap{
+    position:absolute;left:0;right:0;bottom:0;padding:16px;
+    background:linear-gradient(transparent,rgba(0,0,0,.82));
+    color:#fff;opacity:0;transform:translateY(10px);transition:.25s;
+  }
+  .art:hover .cap{opacity:1;transform:none}
+  .art .cap h4{margin:0;font-size:1.05rem}
+  .art .cap span{font-size:.82rem;color:#e6d5ff}
+
+  /* ===================== HERRAMIENTAS ===================== */
   .chips{display:flex;flex-wrap:wrap;gap:12px}
   .chip{background:var(--card);border:1px solid var(--border);padding:10px 18px;border-radius:12px;font-weight:500}
 
-  /* contacto */
+  /* ===================== CONTACTO ===================== */
   .contact{text-align:center;background:var(--bg-soft);border-radius:28px;padding:64px 24px;border:1px solid var(--border)}
   .contact h2{font-size:2.2rem;margin:0 0 10px}
-  .contact p{color:var(--muted);margin:0 auto 26px;max-width:460px}
+  .contact p{color:var(--muted);margin:0 auto 26px;max-width:480px}
   .socials{display:flex;gap:14px;justify-content:center;margin-top:26px;flex-wrap:wrap}
-  .socials a{width:46px;height:46px;border-radius:12px;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;transition:transform .18s,background .2s}
+  .socials a{width:46px;height:46px;border-radius:12px;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;transition:.18s}
   .socials a:hover{transform:translateY(-3px);background:var(--accent)}
   .socials svg{width:20px;height:20px;fill:var(--text)}
   .socials a:hover svg{fill:#fff}
 
   footer.foot{padding:40px 0;text-align:center;color:var(--muted);font-size:.88rem;border-top:1px solid var(--border)}
 
-  /* animacion de aparicion al hacer scroll */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
   .reveal.in{opacity:1;transform:none}
 </style>
@@ -156,25 +158,25 @@
   <!-- ===================== NAV ===================== -->
   <header class="nav">
     <div class="wrap nav-inner">
-      <div class="logo">Tu<span>Nombre</span></div>
+      <div class="logo">Sophia<span> Maseda</span></div>
       <nav class="links">
         <a href="#sobre">Sobre mí</a>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#skills">Skills</a>
+        <a href="#galeria">Galería</a>
+        <a href="#skills">Herramientas</a>
         <a href="#contacto">Contacto</a>
       </nav>
-      <a href="#contacto" class="nav-cta">Contactame</a>
+      <a href="#contacto" class="nav-cta">Contactar</a>
     </div>
   </header>
 
   <!-- ===================== HERO ===================== -->
   <section class="hero wrap">
-    <div class="avatar">TN</div>
-    <h1>Hola, soy Tu Nombre</h1>
-    <div class="role">Diseñador &amp; Desarrollador Web</div>
-    <p>Creo experiencias digitales limpias, rápidas y con estilo. Convierto ideas en sitios y productos que la gente disfruta usar.</p>
+    <div class="avatar">SM</div>
+    <h1>Sophia Maseda</h1>
+    <div class="role">Artista Digital · 3D · Diseño de Personajes</div>
+    <p>Doy vida a personajes e ideas a través del arte 3D, splash arts e ilustración. Cada proyecto es un mundo nuevo listo para ser explorado.</p>
     <div class="cta-row">
-      <a href="#proyectos" class="btn primary">Ver proyectos</a>
+      <a href="#galeria" class="btn primary">Ver mi trabajo</a>
       <a href="#contacto" class="btn ghost">Trabajemos juntos</a>
     </div>
   </section>
@@ -182,97 +184,111 @@
   <!-- ===================== SOBRE MÍ ===================== -->
   <section id="sobre" class="wrap reveal">
     <h2 class="section-title">Sobre mí<span class="dot">.</span></h2>
-    <p class="section-sub">Un poco de quién soy y qué hago.</p>
+    <p class="section-sub">Quién soy y qué me apasiona crear.</p>
     <div class="about-grid about">
       <div>
-        <p>Soy un profesional apasionado por el diseño y la tecnología. Me enfoco en crear soluciones que combinan estética y funcionalidad, cuidando cada detalle.</p>
-        <p>Cuando no estoy trabajando, me gusta explorar nuevas herramientas, aprender y llevar mis ideas al siguiente nivel. Contame tu proyecto y lo hacemos realidad.</p>
+        <p>Soy Sophia, artista digital especializada en <strong>diseño de personajes, arte 3D y splash arts</strong>. Me encanta contar historias a través de la imagen y construir universos visuales con personalidad propia.</p>
+        <p>Trabajo tanto en proyectos personales como para clientes: desde el concept inicial hasta el render final. Si tenés una idea, la convierto en arte.</p>
       </div>
       <div class="stats">
-        <div class="stat"><b>+30</b><span>Proyectos</span></div>
-        <div class="stat"><b>+5</b><span>Años de experiencia</span></div>
-        <div class="stat"><b>+20</b><span>Clientes felices</span></div>
-        <div class="stat"><b>100%</b><span>Compromiso</span></div>
+        <div class="stat"><b>+50</b><span>Obras creadas</span></div>
+        <div class="stat"><b>3D</b><span>Modelado &amp; render</span></div>
+        <div class="stat"><b>+15</b><span>Personajes</span></div>
+        <div class="stat"><b>100%</b><span>Dedicación</span></div>
       </div>
     </div>
   </section>
 
-  <!-- ===================== PROYECTOS ===================== -->
-  <section id="proyectos" class="wrap reveal">
-    <h2 class="section-title">Proyectos<span class="dot">.</span></h2>
-    <p class="section-sub">Algunos trabajos de los que estoy orgulloso.</p>
-    <div class="grid">
-      <article class="card">
-        <div class="thumb">🚀</div>
-        <div class="body">
-          <h3>Proyecto Uno</h3>
-          <p>Breve descripción de lo que hiciste y qué problema resolviste.</p>
-          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="thumb">🎨</div>
-        <div class="body">
-          <h3>Proyecto Dos</h3>
-          <p>Breve descripción de lo que hiciste y qué problema resolviste.</p>
-          <div class="tags"><span class="tag">Diseño</span><span class="tag">UI/UX</span></div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="thumb">⚡</div>
-        <div class="body">
-          <h3>Proyecto Tres</h3>
-          <p>Breve descripción de lo que hiciste y qué problema resolviste.</p>
-          <div class="tags"><span class="tag">React</span><span class="tag">API</span></div>
-        </div>
-      </article>
+  <!-- ===================== GALERÍA ===================== -->
+  <section id="galeria" class="wrap reveal">
+    <h2 class="section-title">Galería<span class="dot">.</span></h2>
+    <p class="section-sub">Filtrá por categoría. Pasá el mouse por cada obra para ver el detalle.</p>
+
+    <div class="filters">
+      <button class="filter active" data-f="all">Todo</button>
+      <button class="filter" data-f="3d">3D</button>
+      <button class="filter" data-f="personajes">Personajes</button>
+      <button class="filter" data-f="splash">Splash Arts</button>
+      <button class="filter" data-f="diseno">Diseño</button>
+    </div>
+
+    <!-- ======================================================
+         CÓMO PONER TUS IMÁGENES REALES:
+         En cada .art, agregá al div:
+           style="background-image:url('assets/obra1.jpg')"
+         y borrá el <div class="ph">emoji</div> de adentro.
+         Guardá tus imágenes en una carpeta /assets del repo.
+         ====================================================== -->
+    <div class="gallery">
+      <div class="art" data-cat="personajes"><div class="ph">🧝‍♀️</div><div class="cap"><h4>Guerrera Élfica</h4><span>Diseño de personaje</span></div></div>
+      <div class="art" data-cat="3d"><div class="ph">🗿</div><div class="cap"><h4>Escultura 3D</h4><span>Modelado &amp; render</span></div></div>
+      <div class="art" data-cat="splash"><div class="ph">🔥</div><div class="cap"><h4>Splash — Invocación</h4><span>Splash art</span></div></div>
+      <div class="art" data-cat="diseno"><div class="ph">🎨</div><div class="cap"><h4>Concept Ambiente</h4><span>Diseño</span></div></div>
+      <div class="art" data-cat="personajes"><div class="ph">🦹‍♂️</div><div class="cap"><h4>Villano</h4><span>Diseño de personaje</span></div></div>
+      <div class="art" data-cat="3d"><div class="ph">🤖</div><div class="cap"><h4>Mecha 3D</h4><span>Modelado &amp; render</span></div></div>
+      <div class="art" data-cat="splash"><div class="ph">⚔️</div><div class="cap"><h4>Splash — Batalla</h4><span>Splash art</span></div></div>
+      <div class="art" data-cat="diseno"><div class="ph">🏰</div><div class="cap"><h4>Prop / Entorno</h4><span>Diseño</span></div></div>
+      <div class="art" data-cat="personajes"><div class="ph">🧚</div><div class="cap"><h4>Hada del Bosque</h4><span>Diseño de personaje</span></div></div>
     </div>
   </section>
 
-  <!-- ===================== SKILLS ===================== -->
+  <!-- ===================== HERRAMIENTAS ===================== -->
   <section id="skills" class="wrap reveal">
-    <h2 class="section-title">Skills<span class="dot">.</span></h2>
-    <p class="section-sub">Herramientas y tecnologías que manejo.</p>
+    <h2 class="section-title">Herramientas<span class="dot">.</span></h2>
+    <p class="section-sub">El software con el que doy vida a mis obras.</p>
     <div class="chips">
-      <span class="chip">HTML5</span>
-      <span class="chip">CSS3</span>
-      <span class="chip">JavaScript</span>
-      <span class="chip">Figma</span>
-      <span class="chip">React</span>
-      <span class="chip">Node.js</span>
+      <span class="chip">Blender</span>
+      <span class="chip">ZBrush</span>
+      <span class="chip">Substance Painter</span>
       <span class="chip">Photoshop</span>
-      <span class="chip">Git</span>
-      <span class="chip">Responsive Design</span>
+      <span class="chip">Clip Studio Paint</span>
+      <span class="chip">Procreate</span>
+      <span class="chip">Marmoset Toolbag</span>
+      <span class="chip">Maya</span>
     </div>
   </section>
 
   <!-- ===================== CONTACTO ===================== -->
   <section id="contacto" class="wrap reveal">
     <div class="contact">
-      <h2>¿Trabajamos juntos?</h2>
-      <p>Estoy disponible para proyectos freelance y nuevas oportunidades. Escribime y te respondo pronto.</p>
-      <a href="mailto:tumail@ejemplo.com" class="btn primary">Enviame un email</a>
+      <h2>¿Creamos algo juntos?</h2>
+      <p>Estoy disponible para comisiones, colaboraciones y proyectos. Escribime y hablemos de tu idea.</p>
+      <a href="mailto:sophiamaseda@ejemplo.com" class="btn primary">Enviame un email</a>
       <div class="socials">
-        <a href="#" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .5C5.7.5.5 5.7.5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.7.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5Z"/></svg></a>
-        <a href="#" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.5 8h4V24h-4V8Zm7 0h3.8v2.2h.1c.5-1 1.8-2.2 3.8-2.2 4 0 4.8 2.7 4.8 6.1V24h-4v-7c0-1.7 0-3.8-2.3-3.8s-2.7 1.8-2.7 3.7V24h-4V8Z"/></svg></a>
+        <a href="#" aria-label="ArtStation" title="ArtStation"><svg viewBox="0 0 24 24"><path d="M0 17.7l2.4 4.1c.4.8 1.2 1.3 2.2 1.3h13.4l-3.1-5.4H0Zm24-.8c0-.5-.1-.9-.4-1.4L16.9 3.9c-.4-.8-1.3-1.4-2.3-1.4h-4.7l11 19 2.6-4.5c.4-.5.5-.7.5-1.1ZM11.6 14.5L7.3 7 3 14.5h8.6Z"/></svg></a>
         <a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.1.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.1-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.1-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.1 1-.3 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4Zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3Zm6.9-11.2a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5Z"/></svg></a>
-        <a href="#" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M.5 23.5l1.6-5.9A11.4 11.4 0 1 1 12 23.4a11.5 11.5 0 0 1-5.6-1.4L.5 23.5Zm6.2-3.7.4.2a9.5 9.5 0 0 0 4.9 1.3 9.5 9.5 0 1 0-8-4.4l.2.4-1 3.5 3.5-1ZM17.5 14c-.1-.2-.4-.3-.9-.5s-1.4-.7-1.6-.8-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a7.8 7.8 0 0 1-2.3-1.4 8.7 8.7 0 0 1-1.6-2c-.2-.3 0-.4.1-.6l.4-.5.3-.4v-.4c0-.1-.6-1.4-.8-2s-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 12 12 0 0 0 4.6 4c.6.3 1.1.5 1.5.6a3.6 3.6 0 0 0 1.6.1c.5-.1 1.4-.6 1.6-1.1a2 2 0 0 0 .2-1.2Z"/></svg></a>
+        <a href="#" aria-label="Twitter / X" title="Twitter / X"><svg viewBox="0 0 24 24"><path d="M18.9 1.9h3.7l-8 9.1 9.4 12.4h-7.4l-5.8-7.6-6.6 7.6H.5l8.5-9.8L0 1.9h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.9H4.4l13.2 17.4Z"/></svg></a>
+        <a href="#" aria-label="Behance" title="Behance"><svg viewBox="0 0 24 24"><path d="M8.3 6.5c.7 0 1.4.1 2 .2.6.1 1 .3 1.4.6.4.3.7.6.9 1.1.2.4.3 1 .3 1.6 0 .7-.2 1.3-.5 1.7-.3.5-.8.8-1.4 1.1.8.2 1.4.6 1.8 1.2.4.6.6 1.2.6 2 0 .7-.1 1.2-.4 1.7-.3.5-.6.9-1.1 1.2-.5.3-1 .5-1.6.7-.6.1-1.2.2-1.8.2H1V6.5h7.3Zm-.4 4.9c.5 0 1-.1 1.3-.4.3-.2.5-.6.5-1.2 0-.3-.1-.5-.2-.7-.1-.2-.3-.3-.5-.4-.2-.1-.4-.2-.7-.2-.3 0-.5-.1-.8-.1H4v3H7.9Zm.2 5.2c.3 0 .6 0 .9-.1.3-.1.5-.2.7-.3.2-.2.3-.3.5-.6.1-.2.2-.5.2-.9 0-.7-.2-1.2-.6-1.5-.4-.3-.9-.4-1.6-.4H4v3.8h4.1ZM16.5 17c.4.4 1 .6 1.7.6.5 0 1-.1 1.4-.4.4-.3.6-.5.7-.8h2.2c-.4 1.1-.9 1.9-1.6 2.4-.7.5-1.6.7-2.7.7-.7 0-1.4-.1-2-.4-.6-.2-1.1-.6-1.5-1-.4-.4-.7-1-.9-1.6-.2-.6-.3-1.3-.3-2 0-.7.1-1.4.4-2 .2-.6.6-1.1 1-1.6.4-.4.9-.8 1.5-1 .6-.2 1.2-.4 1.9-.4.8 0 1.5.2 2 .5.6.3 1 .7 1.4 1.2.4.5.6 1.1.8 1.7.1.6.2 1.3.1 2h-6.3c0 .8.2 1.4.6 1.8ZM19.7 12c-.3-.3-.8-.5-1.4-.5-.4 0-.7.1-1 .2-.3.1-.5.3-.6.5-.2.2-.3.4-.3.6-.1.2-.1.4-.1.6h3.9c-.1-.7-.3-1.1-.5-1.4ZM15 7.7h4.9V9H15V7.7Z"/></svg></a>
       </div>
     </div>
   </section>
 
   <footer class="foot">
-    <div class="wrap">© <span id="year"></span> Tu Nombre — Hecho con ❤️ y código propio.</div>
+    <div class="wrap">© <span id="year"></span> Sophia Maseda — Todos los derechos reservados.</div>
   </footer>
 
 <script>
-  // año automático
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // filtros de galería
+  const filters = document.querySelectorAll('.filter');
+  const arts = document.querySelectorAll('.art');
+  filters.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      filters.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.f;
+      arts.forEach(a=>{
+        const show = f==='all' || a.dataset.cat===f;
+        a.style.display = show ? '' : 'none';
+      });
+    });
+  });
 
   // reveal on scroll
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
-  },{threshold:.15});
+  },{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </script>
 </body>
