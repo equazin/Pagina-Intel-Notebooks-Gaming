@@ -55,20 +55,32 @@
   <h1>Panel de obras 🎨</h1>
   <p class="sub">Cargá, editá y borrá las obras de tu portfolio. Los cambios se publican solos.</p>
 
-  <!-- ==================== LOGIN ==================== -->
-  <section class="panel" id="loginPanel">
-    <h2>Acceso</h2>
+  <!-- ==================== SETUP (primera vez) ==================== -->
+  <section class="panel hidden" id="setupPanel">
+    <h2>Configurar acceso (1 sola vez)</h2>
+    <p class="hint" style="margin-top:-8px">Pegá tu token de GitHub y elegí un PIN. El token se guarda <b>cifrado</b> con tu PIN en este navegador. Después entrás solo con el PIN.</p>
     <label>Token de acceso de GitHub</label>
-    <input type="password" id="token" placeholder="ghp_... o github_pat_...">
-    <p class="hint">Se guarda solo en <b>este navegador</b> (no se comparte). Si usás una compu ajena, usá "Olvidar token" al terminar.</p>
-    <label style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--text)">
-      <input type="checkbox" id="remember" checked style="width:auto;margin:0"> Recordarme en este navegador
-    </label>
-    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-      <button id="loginBtn">Entrar</button>
+    <input type="password" id="token" placeholder="github_pat_...">
+    <div class="row">
+      <div><label>Elegí un PIN (mín. 4 dígitos)</label><input type="password" id="pinNew" inputmode="numeric" autocomplete="new-password" placeholder="••••"></div>
+      <div><label>Repetí el PIN</label><input type="password" id="pinNew2" inputmode="numeric" autocomplete="new-password" placeholder="••••"></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button id="setupBtn">Guardar acceso</button>
       <a href="#ayuda"><button type="button" class="ghost">¿Cómo saco el token?</button></a>
     </div>
-    <div class="status" id="loginStatus"></div>
+    <div class="status" id="setupStatus"></div>
+  </section>
+
+  <!-- ==================== UNLOCK (con PIN) ==================== -->
+  <section class="panel hidden" id="unlockPanel">
+    <h2>Ingresá tu PIN</h2>
+    <input type="password" id="pin" inputmode="numeric" autocomplete="off" placeholder="••••" style="max-width:200px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button id="unlockBtn">Entrar</button>
+      <button type="button" class="ghost" id="resetBtn">Olvidé el PIN / reconfigurar</button>
+    </div>
+    <div class="status" id="unlockStatus"></div>
   </section>
 
   <!-- ==================== APP ==================== -->
@@ -76,7 +88,7 @@
     <section class="panel">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <h2 style="margin:0">Nueva obra</h2>
-        <button class="ghost" id="logoutBtn" style="padding:7px 14px;font-size:.85rem">Olvidar token</button>
+        <button class="ghost" id="logoutBtn" style="padding:7px 14px;font-size:.85rem">Salir 🔒</button>
       </div>
       <form id="addForm">
         <label>Imagen de la obra</label>
@@ -132,7 +144,8 @@
   const API    = 'https://api.github.com';
 
   const $ = id => document.getElementById(id);
-  let TOKEN = localStorage.getItem('gh_token') || '';
+  let TOKEN = '';                 // solo en memoria, nunca en texto plano
+  localStorage.removeItem('gh_token'); // limpiar version vieja si existiera
 
   // ---- helpers ----
   const b64encode = str => btoa(unescape(encodeURIComponent(str)));
@@ -171,29 +184,84 @@
     return gh(`/repos/${OWNER}/${REPO}/contents/${path}`, { method:'PUT', body: JSON.stringify(body) });
   }
 
-  // ====== LOGIN ======
-  async function doLogin(){
-    TOKEN = $('token').value.trim();
-    if(!TOKEN){ return setStatus($('loginStatus'),'Pegá tu token primero.','err'); }
-    setStatus($('loginStatus'),'Verificando...');
-    try{
-      const res = await gh(`/repos/${OWNER}/${REPO}`);
-      if(!res.ok){ throw new Error(res.status===401?'Token inválido o vencido.':'El token no tiene acceso a este repo.'); }
-      if($('remember').checked) localStorage.setItem('gh_token', TOKEN);
-      showApp();
-    }catch(e){ setStatus($('loginStatus'), e.message, 'err'); }
+  // ====== CIFRADO DEL TOKEN CON PIN (Web Crypto: PBKDF2 + AES-GCM) ======
+  const enc=new TextEncoder(), dec=new TextDecoder();
+  const buf2b64=b=>btoa(String.fromCharCode(...new Uint8Array(b)));
+  const b642buf=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+  async function deriveKey(pin, salt){
+    const base=await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt, iterations:250000, hash:'SHA-256'},
+      base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+  }
+  async function encryptToken(token, pin){
+    const salt=crypto.getRandomValues(new Uint8Array(16));
+    const iv=crypto.getRandomValues(new Uint8Array(12));
+    const key=await deriveKey(pin, salt);
+    const ct=await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, enc.encode(token));
+    return { salt:buf2b64(salt), iv:buf2b64(iv), ct:buf2b64(ct) };
+  }
+  async function decryptToken(blob, pin){
+    const key=await deriveKey(pin, b642buf(blob.salt));
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM', iv:b642buf(blob.iv)}, key, b642buf(blob.ct));
+    return dec.decode(pt);
+  }
+
+  // ====== PANTALLAS ======
+  function showLogin(){
+    $('app').classList.add('hidden');
+    $('ayuda').classList.remove('hidden');
+    const has=localStorage.getItem('gh_enc');
+    $('setupPanel').classList.toggle('hidden', !!has);
+    $('unlockPanel').classList.toggle('hidden', !has);
+    if(has) setTimeout(()=>$('pin').focus(),50);
   }
   function showApp(){
-    $('loginPanel').classList.add('hidden');
+    $('setupPanel').classList.add('hidden');
+    $('unlockPanel').classList.add('hidden');
     $('ayuda').classList.add('hidden');
     $('app').classList.remove('hidden');
     loadList();
   }
-  function logout(){
-    localStorage.removeItem('gh_token'); TOKEN=''; $('token').value='';
-    $('app').classList.add('hidden');
-    $('loginPanel').classList.remove('hidden'); $('ayuda').classList.remove('hidden');
-    setStatus($('loginStatus'),'Token olvidado.','ok');
+  function lock(){ TOKEN=''; showLogin(); }  // "Salir": borra el token de memoria, deja el cifrado
+
+  // ====== SETUP (primera vez): token + PIN ======
+  async function doSetup(){
+    const token=$('token').value.trim(), p1=$('pinNew').value, p2=$('pinNew2').value;
+    if(!token) return setStatus($('setupStatus'),'Pegá tu token.','err');
+    if(p1.length<4) return setStatus($('setupStatus'),'El PIN debe tener al menos 4 caracteres.','err');
+    if(p1!==p2) return setStatus($('setupStatus'),'Los PIN no coinciden.','err');
+    setStatus($('setupStatus'),'Verificando token...');
+    TOKEN=token;
+    const res=await gh(`/repos/${OWNER}/${REPO}`);
+    if(!res.ok){ TOKEN=''; return setStatus($('setupStatus'), res.status===401?'Token inválido o vencido.':'El token no tiene acceso a este repo.','err'); }
+    const blob=await encryptToken(token, p1);
+    localStorage.setItem('gh_enc', JSON.stringify(blob));
+    $('token').value=''; $('pinNew').value=''; $('pinNew2').value='';
+    setStatus($('setupStatus'),'');
+    showApp();
+  }
+
+  // ====== UNLOCK (con PIN) ======
+  let tries=0;
+  async function doUnlock(){
+    const pin=$('pin').value;
+    if(!pin) return;
+    let blob; try{ blob=JSON.parse(localStorage.getItem('gh_enc')); }catch(e){ return showLogin(); }
+    setStatus($('unlockStatus'),'Verificando...');
+    try{
+      TOKEN=await decryptToken(blob, pin);
+      tries=0; $('pin').value=''; setStatus($('unlockStatus'),''); showApp();
+    }catch(e){
+      TOKEN=''; tries++;
+      setStatus($('unlockStatus'), 'PIN incorrecto.'+(tries>=3?' Esperá unos segundos...':''), 'err');
+      if(tries>=3){ $('unlockBtn').disabled=true; setTimeout(()=>{ $('unlockBtn').disabled=false; }, 4000); }
+    }
+  }
+  function doReset(){
+    if(!confirm('Esto borra el acceso guardado en este navegador. Vas a tener que pegar el token de nuevo. ¿Continuar?')) return;
+    localStorage.removeItem('gh_enc'); TOKEN=''; tries=0;
+    showLogin();
   }
 
   // ====== AGREGAR ======
@@ -266,11 +334,14 @@
   }
 
   // ====== INIT ======
-  $('loginBtn').onclick=doLogin;
-  $('logoutBtn').onclick=logout;
+  $('setupBtn').onclick=doSetup;
+  $('unlockBtn').onclick=doUnlock;
+  $('resetBtn').onclick=doReset;
+  $('logoutBtn').onclick=lock;
   $('addForm').addEventListener('submit', addObra);
-  $('token').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-  if(TOKEN){ $('token').value=TOKEN; showApp(); }
+  $('pin').addEventListener('keydown', e=>{ if(e.key==='Enter') doUnlock(); });
+  $('pinNew2').addEventListener('keydown', e=>{ if(e.key==='Enter') doSetup(); });
+  showLogin();
 </script>
 </body>
 </html>
