@@ -5,131 +5,126 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sophia Maseda — Artista Digital &amp; 3D</title>
 <meta name="description" content="Portfolio de Sophia Maseda: diseño de personajes, arte 3D, splash arts e ilustración.">
-
-<!-- Open Graph (se ve lindo al compartir en redes) -->
 <meta property="og:title" content="Sophia Maseda — Artista Digital &amp; 3D">
 <meta property="og:description" content="Diseño de personajes, arte 3D, splash arts e ilustración.">
 <meta property="og:type" content="website">
 
 <style>
   /* ===========================================================
-     PALETA  ·  cambiá estos valores y cambia todo el sitio
+     PALETA · violeta aurora (cambiá estos valores y cambia todo)
      =========================================================== */
   :root{
-    --accent:#b14bff;         /* violeta principal */
-    --accent-2:#ff5fa2;       /* rosa secundario para gradientes */
-    --bg:#0c0910;
-    --bg-soft:#15111c;
-    --card:#1a1522;
-    --text:#f3eefb;
-    --muted:#a99cba;
-    --border:rgba(255,255,255,.09);
-    --radius:18px;
-    --max:1120px;
-    --shadow:0 24px 70px -25px rgba(140,40,220,.55);
+    --accent:#b14bff; --accent-2:#ff5fa2;
+    --bg:#0c0910; --bg-soft:#15111c; --card:#1a1522;
+    --text:#f3eefb; --muted:#a99cba; --border:rgba(255,255,255,.12);
+    --glass:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02));
+    --radius:20px; --max:1120px;
+    --shadow:0 30px 70px -22px rgba(140,40,220,.55);
+    --aura:.5;
     font-synthesis:none;
   }
   @media (prefers-color-scheme: light){
     :root[data-theme="auto"]{
-      --bg:#faf7ff; --bg-soft:#ffffff; --card:#ffffff;
-      --text:#1a1320; --muted:#6a5f78; --border:rgba(0,0,0,.08);
-      --shadow:0 24px 70px -30px rgba(140,40,220,.3);
+      --bg:#f7f5fc; --bg-soft:#ffffff; --card:#ffffff;
+      --text:#191325; --muted:#655a78; --border:rgba(20,10,40,.1);
+      --glass:linear-gradient(160deg,rgba(255,255,255,.75),rgba(255,255,255,.4));
+      --shadow:0 30px 70px -30px rgba(140,40,220,.3); --aura:.35;
     }
   }
+  :root[data-theme="dark"]{--bg:#0c0910;--bg-soft:#15111c;--card:#1a1522;--text:#f3eefb;--muted:#a99cba;--border:rgba(255,255,255,.12);--glass:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02));--aura:.5}
+  :root[data-theme="light"]{--bg:#f7f5fc;--bg-soft:#ffffff;--card:#ffffff;--text:#191325;--muted:#655a78;--border:rgba(20,10,40,.1);--glass:linear-gradient(160deg,rgba(255,255,255,.75),rgba(255,255,255,.4));--aura:.35}
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:var(--bg);color:var(--text);line-height:1.6;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  }
+  body{margin:0;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   img{max-width:100%;display:block}
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
-  /* section.wrap gana en especificidad a .wrap para no perder el padding vertical */
-  section.wrap{padding-top:96px;padding-bottom:96px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  section.wrap{padding-top:92px;padding-bottom:92px}
 
-  body::before{
-    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  /* aurora de fondo animada */
+  body::before{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;filter:blur(72px);opacity:var(--aura);
     background:
-      radial-gradient(650px 450px at 12% -5%, color-mix(in srgb,var(--accent) 32%, transparent), transparent 60%),
-      radial-gradient(650px 450px at 92% 8%, color-mix(in srgb,var(--accent-2) 26%, transparent), transparent 60%);
-  }
+      radial-gradient(38% 38% at 16% 12%,#b14bffcc,transparent 70%),
+      radial-gradient(36% 36% at 84% 8%,#ff5fa2cc,transparent 70%),
+      radial-gradient(44% 44% at 62% 72%,#6a2cffaa,transparent 70%);
+    animation:aurora 18s ease-in-out infinite alternate}
+  @keyframes aurora{to{transform:translate3d(0,3%,0) scale(1.1)}}
+  @media(prefers-reduced-motion:reduce){body::before{animation:none}}
+
+  .grad{background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
 
   /* ===================== NAV ===================== */
-  header.nav{
-    position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
-    background:color-mix(in srgb,var(--bg) 72%, transparent);
-    border-bottom:1px solid var(--border);
-  }
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .logo{font-weight:800;letter-spacing:.3px}
-  .logo span{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--border)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-weight:800;letter-spacing:.2px}
+  .logo span{background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
   nav.links{display:flex;gap:26px}
   nav.links a{color:var(--muted);font-weight:500;font-size:.95rem;transition:color .2s}
   nav.links a:hover{color:var(--text)}
-  .nav-cta{padding:9px 18px;border-radius:999px;font-weight:600;font-size:.9rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
-  @media(max-width:760px){ nav.links{display:none} }
+  .nav-cta{padding:9px 18px;border-radius:999px;font-weight:600;font-size:.9rem;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+  @media(max-width:760px){nav.links{display:none}}
 
-  /* ===================== HERO ===================== */
-  section.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:120px;padding-bottom:70px}
-  .avatar{
-    width:138px;height:138px;border-radius:50%;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:grid;place-items:center;font-size:3rem;font-weight:800;color:#fff;
-    box-shadow:var(--shadow);margin-bottom:26px;overflow:hidden;
-  }
-  /* Para foto real: reemplazá el "SM" por  <img src="assets/foto.jpg" alt="Sophia Maseda"> */
-  .hero h1{font-size:clamp(2.2rem,6vw,3.8rem);margin:0 0 8px;line-height:1.1;letter-spacing:-1px}
-  .hero .role{
-    font-weight:600;font-size:1.15rem;margin-bottom:14px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  }
-  .hero p{max-width:580px;color:var(--muted);font-size:1.08rem;margin:0 auto 30px}
-  .cta-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-  .btn{padding:13px 26px;border-radius:999px;font-weight:600;font-size:.98rem;border:1px solid var(--border);transition:transform .18s}
+  /* ===================== HERO (split glass) ===================== */
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center;padding-top:96px}
+  @media(max-width:820px){.hero{grid-template-columns:1fr;gap:32px}}
+  .eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:18px}
+  .hero h1{font-size:clamp(2.6rem,6vw,4.4rem);margin:0 0 16px;letter-spacing:-1.5px;line-height:1.02;text-wrap:balance}
+  .hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);max-width:460px;font-size:1.1rem;margin:0 0 28px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{padding:13px 26px;border-radius:999px;font-weight:600;font-size:.98rem;border:1px solid var(--border);transition:transform .18s,box-shadow .18s;display:inline-block}
   .btn:hover{transform:translateY(-2px)}
   .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border:none;box-shadow:var(--shadow)}
-  .btn.ghost{background:var(--card)}
+  .btn.ghost{background:var(--glass);backdrop-filter:blur(10px)}
+  .hero-card{background:var(--glass);border:1px solid var(--border);border-radius:26px;padding:28px;
+    backdrop-filter:blur(16px);box-shadow:var(--shadow)}
+  .hero-card .av{width:84px;height:84px;border-radius:22px;display:grid;place-items:center;font-weight:800;font-size:1.7rem;color:#fff;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));margin-bottom:18px;box-shadow:0 12px 30px #b14bff55}
+  .hero-card .hc-role{color:var(--muted);font-size:.95rem;padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--border)}
+  .hero-card .hc-stat{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-top:1px solid var(--border);font-size:.98rem}
+  .hero-card .hc-stat:first-of-type{border-top:none}
+  .hero-card .hc-stat b{font-size:1.15rem;background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
 
   /* ===================== TÍTULOS ===================== */
   .section-title{font-size:2rem;margin:0 0 6px;letter-spacing:-.5px}
-  .section-title .dot{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .section-sub{color:var(--muted);margin:0 0 40px}
+  .dot{background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .section-sub{color:var(--muted);margin:0 0 38px}
 
   /* ===================== SOBRE MÍ ===================== */
-  .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center}
-  @media(max-width:760px){ .about-grid{grid-template-columns:1fr} }
-  .about p{color:var(--muted);font-size:1.05rem}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center}
-  .stat b{display:block;font-size:1.9rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .stat span{color:var(--muted);font-size:.88rem}
+  .about-panel{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+    padding:32px;backdrop-filter:blur(14px);box-shadow:var(--shadow)}
+  .about-panel p{color:var(--muted);font-size:1.08rem;margin:0 0 14px;max-width:760px}
+  .about-panel p:last-child{margin-bottom:0}
+  .about-panel p strong{color:var(--text)}
 
-  /* ===================== FILTROS GALERÍA ===================== */
-  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
-  .filter{padding:8px 18px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s}
-  .filter:hover{color:var(--text)}
-  .filter.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent}
+  /* ===================== HERRAMIENTAS (glass tilt) ===================== */
+  .tools{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;perspective:1000px}
+  @media(max-width:820px){.tools{grid-template-columns:repeat(2,1fr)}}
+  .tool{background:var(--glass);border:1px solid var(--border);border-radius:18px;padding:24px 16px;
+    font-weight:600;text-align:center;backdrop-filter:blur(10px);transition:transform .25s,border-color .25s,box-shadow .25s;transform-style:preserve-3d}
+  .tool:hover{transform:rotateX(8deg) rotateY(-8deg) translateY(-5px);border-color:var(--accent);box-shadow:0 22px 55px #b14bff3a}
+  .tool .ic{width:44px;height:44px;border-radius:14px;margin:0 auto 13px;display:grid;place-items:center;font-size:1.3rem;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 10px 24px #b14bff44}
 
   /* ===================== GALERÍA ===================== */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+  .filter{padding:8px 18px;border-radius:999px;border:1px solid var(--border);background:var(--glass);color:var(--muted);
+    font-weight:600;font-size:.9rem;cursor:pointer;transition:.2s;backdrop-filter:blur(8px)}
+  .filter:hover{color:var(--text)}
+  .filter.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent}
   .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  @media(max-width:860px){ .gallery{grid-template-columns:1fr 1fr} }
-  @media(max-width:560px){ .gallery{grid-template-columns:1fr} }
-  .art{
-    position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:3/4;
-    border:1px solid var(--border);cursor:pointer;transition:transform .22s,box-shadow .22s;
-    background-size:cover;background-position:center;
-  }
+  @media(max-width:860px){.gallery{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.gallery{grid-template-columns:1fr}}
+  .art{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:3/4;border:1px solid var(--border);
+    cursor:pointer;transition:transform .22s,box-shadow .22s;background-size:cover;background-position:center;
+    background-image:linear-gradient(155deg,color-mix(in srgb,var(--accent) 26%,var(--card)),var(--card))}
   .art:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
-  .art .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem;background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 22%,var(--card)),var(--card))}
-  .art .cap{
-    position:absolute;left:0;right:0;bottom:0;padding:16px;
-    background:linear-gradient(transparent,rgba(0,0,0,.82));
-    color:#fff;opacity:0;transform:translateY(10px);transition:.25s;
-  }
+  .art .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:2.6rem}
+  .art .cap{position:absolute;left:0;right:0;bottom:0;padding:16px;color:#fff;opacity:0;transform:translateY(10px);transition:.25s;
+    background:linear-gradient(transparent,rgba(0,0,0,.82))}
   .art:hover .cap{opacity:1;transform:none}
   .art .cap h4{margin:0;font-size:1.05rem}
   .art .cap span{font-size:.82rem;color:#e6d5ff}
@@ -150,48 +145,26 @@
   .lb .lb-close{position:absolute;top:16px;right:24px;color:#fff;font-size:2.2rem;line-height:1;cursor:pointer;opacity:.85}
   .lb .lb-close:hover{opacity:1}
 
-  /* ===================== HERRAMIENTAS ===================== */
-  .chips{display:flex;flex-wrap:wrap;gap:12px 14px}
-  .chip{
-    display:inline-flex;align-items:center;gap:9px;
-    background:var(--card);border:1px solid var(--border);
-    padding:11px 20px;border-radius:999px;font-weight:500;font-size:.95rem;
-    transition:border-color .2s,transform .18s;
-  }
-  .chip::before{content:"";width:7px;height:7px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
-  .chip:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
-
   /* ===================== CONTACTO ===================== */
-  .contact{text-align:center;background:var(--bg-soft);border-radius:28px;padding:64px 24px;border:1px solid var(--border)}
+  .contact{text-align:center;background:var(--glass);border-radius:28px;padding:60px 24px;border:1px solid var(--border);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
   .contact h2{font-size:2.2rem;margin:0 0 10px}
-  .contact p{color:var(--muted);margin:0 auto 26px;max-width:480px}
-  .socials{display:flex;gap:14px;justify-content:center;margin-top:26px;flex-wrap:wrap}
-  .socials a{width:46px;height:46px;border-radius:12px;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;transition:.18s}
+  .contact>p{color:var(--muted);margin:0 auto 26px;max-width:480px}
+  .contact-form{max-width:520px;margin:0 auto;display:grid;gap:14px;text-align:left}
+  .contact-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){.contact-form .row{grid-template-columns:1fr}}
+  .contact-form input,.contact-form textarea{width:100%;padding:14px 16px;border-radius:12px;font:inherit;
+    background:var(--bg-soft);color:var(--text);border:1px solid var(--border);transition:border-color .2s,box-shadow .2s}
+  .contact-form textarea{resize:vertical;min-height:130px}
+  .contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+  .contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--muted)}
+  .contact-form button{padding:14px 26px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;border:none;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:var(--shadow);transition:transform .18s}
+  .contact-form button:hover{transform:translateY(-2px)}
+  .socials{display:flex;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+  .socials a{width:46px;height:46px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--border);display:grid;place-items:center;transition:.18s}
   .socials a:hover{transform:translateY(-3px);background:var(--accent)}
   .socials svg{width:20px;height:20px;fill:var(--text)}
   .socials a:hover svg{fill:#fff}
-
-  /* formulario de contacto */
-  .contact-form{max-width:520px;margin:0 auto;display:grid;gap:14px;text-align:left}
-  .contact-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:520px){ .contact-form .row{grid-template-columns:1fr} }
-  .contact-form input,.contact-form textarea{
-    width:100%;padding:14px 16px;border-radius:12px;font:inherit;
-    background:var(--card);color:var(--text);border:1px solid var(--border);
-    transition:border-color .2s,box-shadow .2s;
-  }
-  .contact-form textarea{resize:vertical;min-height:130px}
-  .contact-form input:focus,.contact-form textarea:focus{
-    outline:none;border-color:var(--accent);
-    box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent);
-  }
-  .contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--muted)}
-  .contact-form button{
-    padding:14px 26px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;border:none;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:var(--shadow);
-    transition:transform .18s;
-  }
-  .contact-form button:hover{transform:translateY(-2px)}
 
   footer.foot{padding:40px 0;text-align:center;color:var(--muted);font-size:.88rem;border-top:1px solid var(--border)}
 
@@ -216,14 +189,22 @@
   </header>
 
   <!-- ===================== HERO ===================== -->
-  <section class="hero wrap">
-    <div class="avatar">SM</div>
-    <h1>Sophia Maseda</h1>
-    <div class="role">Artista Digital · 3D · Diseño de Personajes</div>
-    <p>Doy vida a personajes e ideas a través del arte 3D, splash arts e ilustración. Cada proyecto es un mundo nuevo listo para ser explorado.</p>
-    <div class="cta-row">
-      <a href="#galeria" class="btn primary">Ver mi trabajo</a>
-      <a href="#contacto" class="btn ghost">Trabajemos juntos</a>
+  <section class="hero wrap reveal">
+    <div class="hero-copy">
+      <div class="eyebrow">Sophia Maseda · Artista Digital 3D</div>
+      <h1>Arte que <em>cuenta historias.</em></h1>
+      <p>Diseño de personajes, arte 3D y splash arts con identidad propia. Del concept inicial al render final.</p>
+      <div class="cta-row">
+        <a href="#galeria" class="btn primary">Ver mi trabajo</a>
+        <a href="#contacto" class="btn ghost">Trabajemos juntos</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="av">SM</div>
+      <div class="hc-role">Artista Digital · 3D · Diseño de Personajes</div>
+      <div class="hc-stat"><span>Obras creadas</span><b>+50</b></div>
+      <div class="hc-stat"><span>Personajes</span><b>+15</b></div>
+      <div class="hc-stat"><span>Disciplinas</span><b>3D · 2D</b></div>
     </div>
   </section>
 
@@ -231,25 +212,34 @@
   <section id="sobre" class="wrap reveal">
     <h2 class="section-title" id="about-title">Sobre mí<span class="dot">.</span></h2>
     <p class="section-sub">Quién soy y qué me apasiona crear.</p>
-    <div class="about-grid about">
+    <div class="about-panel">
       <div id="about-text">
         <p>Soy Sophia, artista digital especializada en <strong>diseño de personajes, arte 3D y splash arts</strong>. Me encanta contar historias a través de la imagen y construir universos visuales con personalidad propia.</p>
         <p>Trabajo tanto en proyectos personales como para clientes: desde el concept inicial hasta el render final. Si tenés una idea, la convierto en arte.</p>
       </div>
-      <div class="stats">
-        <div class="stat"><b>+50</b><span>Obras creadas</span></div>
-        <div class="stat"><b>3D</b><span>Modelado &amp; render</span></div>
-        <div class="stat"><b>+15</b><span>Personajes</span></div>
-        <div class="stat"><b>100%</b><span>Dedicación</span></div>
-      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HERRAMIENTAS ===================== -->
+  <section id="skills" class="wrap reveal">
+    <h2 class="section-title">Herramientas<span class="dot">.</span></h2>
+    <p class="section-sub">El software con el que doy vida a mis obras.</p>
+    <div class="tools">
+      <div class="tool"><div class="ic">🔶</div>Blender</div>
+      <div class="tool"><div class="ic">🗿</div>ZBrush</div>
+      <div class="tool"><div class="ic">🎨</div>Substance Painter</div>
+      <div class="tool"><div class="ic">🖌️</div>Photoshop</div>
+      <div class="tool"><div class="ic">✏️</div>Clip Studio Paint</div>
+      <div class="tool"><div class="ic">🖼️</div>Procreate</div>
+      <div class="tool"><div class="ic">💡</div>Marmoset Toolbag</div>
+      <div class="tool"><div class="ic">🧊</div>Maya</div>
     </div>
   </section>
 
   <!-- ===================== GALERÍA ===================== -->
   <section id="galeria" class="wrap reveal">
     <h2 class="section-title">Galería<span class="dot">.</span></h2>
-    <p class="section-sub">Filtrá por categoría. Pasá el mouse por cada obra para ver el detalle.</p>
-
+    <p class="section-sub">Filtrá por categoría. Clic en una obra para verla en grande.</p>
     <div class="filters">
       <button class="filter active" data-f="all">Todo</button>
       <button class="filter" data-f="3d">3D</button>
@@ -257,28 +247,10 @@
       <button class="filter" data-f="splash">Splash Arts</button>
       <button class="filter" data-f="diseno">Diseño</button>
     </div>
-
-    <!-- La galería se carga sola desde obras.json (se administra desde /admin) -->
     <div class="gallery" id="gallery"></div>
     <p id="gallery-empty" class="section-sub" style="display:none;text-align:center;margin-top:20px">
       Todavía no hay obras cargadas. Cargalas desde el <a href="admin.html" style="color:var(--accent)">panel de administración</a>.
     </p>
-  </section>
-
-  <!-- ===================== HERRAMIENTAS ===================== -->
-  <section id="skills" class="wrap reveal">
-    <h2 class="section-title">Herramientas<span class="dot">.</span></h2>
-    <p class="section-sub">El software con el que doy vida a mis obras.</p>
-    <div class="chips">
-      <span class="chip">Blender</span>
-      <span class="chip">ZBrush</span>
-      <span class="chip">Substance Painter</span>
-      <span class="chip">Photoshop</span>
-      <span class="chip">Clip Studio Paint</span>
-      <span class="chip">Procreate</span>
-      <span class="chip">Marmoset Toolbag</span>
-      <span class="chip">Maya</span>
-    </div>
   </section>
 
   <!-- ===================== CONTACTO ===================== -->
@@ -291,8 +263,7 @@
            FORMULARIO FUNCIONAL (con FormSubmit.co, sin backend)
            1) Cambiá el email de la linea de abajo (action=...) por el tuyo.
            2) La PRIMERA vez que alguien envie el form, FormSubmit te manda
-              un mail para confirmar. Hacé clic en el link y listo: a partir
-              de ahi todos los mensajes te llegan a tu casilla.
+              un mail para confirmar. Hacé clic en el link y listo.
            ========================================================= -->
       <form class="contact-form" action="https://formsubmit.co/sophiamaseda@ejemplo.com" method="POST">
         <input type="hidden" name="_subject" value="Nuevo mensaje desde tu portfolio">
@@ -376,8 +347,6 @@
   function closeLightbox(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; resetZoom(); }
 
   lb.addEventListener('click', closeLightbox);
-
-  // clic en la imagen: alterna acercar / restablecer (no cierra)
   lbImg.addEventListener('click', e=>{
     e.stopPropagation();
     if(moved){ moved=false; return; }
@@ -385,7 +354,6 @@
     if(zScale===1){ zScale=2.2; } else { zX=0; zY=0; zScale=1; }
     applyZoom();
   });
-  // rueda del mouse: zoom continuo
   lbImg.addEventListener('wheel', e=>{
     e.preventDefault(); e.stopPropagation();
     lbImg.style.transition='none';
@@ -393,7 +361,6 @@
     if(zScale===1){ zX=0; zY=0; }
     applyZoom();
   }, {passive:false});
-  // arrastrar para mover cuando está acercada
   lbImg.addEventListener('pointerdown', e=>{
     if(zScale<=1) return;
     e.stopPropagation(); panning=true; moved=false;
