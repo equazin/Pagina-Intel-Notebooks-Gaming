@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sophia Maseda — Mockup Minimalista</title>
+<style>
+  :root{
+    --bg:#f7f6f3;      /* blanco hueso */
+    --ink:#141414;     /* casi negro */
+    --muted:#8a8a86;   /* gris */
+    --line:#e2e0da;    /* linea sutil */
+    --card:#efeee9;
+    --max:1000px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f0f0e; --ink:#f2f1ec; --muted:#8f8f8a; --line:#26262340; --card:#1a1a18; }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Georgia","Times New Roman",serif;
+    line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
+  .sans{font-family:system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  /* nav */
+  header{border-bottom:1px solid var(--line)}
+  .nav{display:flex;justify-content:space-between;align-items:center;height:76px}
+  .brand{font-size:1.05rem;letter-spacing:.02em}
+  .menu{display:flex;gap:34px}
+  .menu a{font-family:system-ui,sans-serif;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:color .2s}
+  .menu a:hover{color:var(--ink)}
+  @media(max-width:640px){ .menu{display:none} }
+
+  /* hero */
+  .hero{padding:120px 0 90px;text-align:center}
+  .eyebrow{font-family:system-ui,sans-serif;font-size:.78rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin-bottom:26px}
+  .hero h1{font-size:clamp(2.8rem,8vw,5.2rem);font-weight:400;line-height:1.02;margin:0 0 24px;letter-spacing:-.02em}
+  .hero p{max-width:440px;margin:0 auto;color:var(--muted);font-size:1.08rem}
+  .rule{width:44px;height:1px;background:var(--ink);margin:36px auto 0}
+
+  /* seccion titulo */
+  .sec{padding:80px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:44px}
+  .sec-head h2{font-size:1.7rem;font-weight:400;margin:0;letter-spacing:-.01em}
+  .sec-head span{font-family:system-ui,sans-serif;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+  /* sobre */
+  .about{max-width:640px;font-size:1.22rem;line-height:1.7}
+  .about span{color:var(--muted)}
+
+  /* galeria minimalista */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+  @media(max-width:720px){ .grid{grid-template-columns:1fr 1fr} }
+  .tile{position:relative;aspect-ratio:4/5;background:var(--card);overflow:hidden}
+  .tile .n{position:absolute;inset:0;display:grid;place-items:center;font-size:2rem;color:var(--muted)}
+  .tile .lbl{
+    position:absolute;left:0;right:0;bottom:0;padding:14px 16px;
+    font-family:system-ui,sans-serif;font-size:.78rem;letter-spacing:.06em;
+    background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;
+    opacity:0;transition:opacity .3s;
+  }
+  .tile:hover .lbl{opacity:1}
+
+  /* herramientas en linea */
+  .tools{display:flex;flex-wrap:wrap;gap:8px 28px;font-family:system-ui,sans-serif;font-size:.95rem;color:var(--muted)}
+  .tools span{position:relative;padding-left:16px}
+  .tools span::before{content:"";position:absolute;left:0;top:.7em;width:5px;height:5px;border-radius:50%;background:var(--ink)}
+
+  /* contacto */
+  .contact{text-align:center;padding:110px 0}
+  .contact h2{font-size:clamp(2rem,5vw,3rem);font-weight:400;margin:0 0 18px}
+  .contact a.mail{font-size:1.3rem;border-bottom:1px solid var(--ink);padding-bottom:2px}
+  .social{margin-top:40px;display:flex;gap:26px;justify-content:center;font-family:system-ui,sans-serif;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
+  .social a{color:var(--muted)}
+  .social a:hover{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;font-family:system-ui,sans-serif;font-size:.78rem;color:var(--muted);text-align:center;letter-spacing:.04em}
+</style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <div class="brand">Sophia Maseda</div>
+      <nav class="menu">
+        <a href="#work">Trabajo</a>
+        <a href="#about">Sobre mí</a>
+        <a href="#contact">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero wrap">
+    <div class="eyebrow">Artista Digital · 3D</div>
+    <h1>Diseño personajes<br>y mundos.</h1>
+    <p>Ilustración, arte 3D y splash arts con una mirada propia. Del concept al render final.</p>
+    <div class="rule"></div>
+  </section>
+
+  <section id="work" class="sec wrap">
+    <div class="sec-head">
+      <h2>Trabajo seleccionado</h2>
+      <span>2024 — 2026</span>
+    </div>
+    <div class="grid">
+      <div class="tile"><div class="n">01</div><div class="lbl">Guerrera Élfica — Personaje</div></div>
+      <div class="tile"><div class="n">02</div><div class="lbl">Escultura — 3D</div></div>
+      <div class="tile"><div class="n">03</div><div class="lbl">Invocación — Splash Art</div></div>
+      <div class="tile"><div class="n">04</div><div class="lbl">Concept — Ambiente</div></div>
+      <div class="tile"><div class="n">05</div><div class="lbl">Mecha — 3D</div></div>
+      <div class="tile"><div class="n">06</div><div class="lbl">Batalla — Splash Art</div></div>
+    </div>
+  </section>
+
+  <section id="about" class="sec wrap">
+    <div class="sec-head">
+      <h2>Sobre mí</h2>
+      <span>Perfil</span>
+    </div>
+    <p class="about">Soy Sophia, artista digital enfocada en diseño de personajes y arte 3D. <span>Me interesa contar historias a través de la imagen y construir universos con identidad. Trabajo en proyectos personales y por encargo.</span></p>
+    <div class="tools" style="margin-top:48px">
+      <span>Blender</span><span>ZBrush</span><span>Substance Painter</span><span>Photoshop</span><span>Clip Studio</span><span>Procreate</span>
+    </div>
+  </section>
+
+  <section id="contact" class="contact wrap">
+    <h2>Trabajemos juntos.</h2>
+    <a class="mail" href="mailto:sophiamaseda@ejemplo.com">sophiamaseda@ejemplo.com</a>
+    <div class="social">
+      <a href="#">ArtStation</a>
+      <a href="#">Instagram</a>
+      <a href="#">Behance</a>
+    </div>
+  </section>
+
+  <footer>© 2026 Sophia Maseda — Mockup estilo minimalista</footer>
+</body>
+</html>

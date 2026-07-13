@@ -147,6 +147,28 @@
   .socials svg{width:20px;height:20px;fill:var(--text)}
   .socials a:hover svg{fill:#fff}
 
+  /* formulario de contacto */
+  .contact-form{max-width:520px;margin:0 auto;display:grid;gap:14px;text-align:left}
+  .contact-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){ .contact-form .row{grid-template-columns:1fr} }
+  .contact-form input,.contact-form textarea{
+    width:100%;padding:14px 16px;border-radius:12px;font:inherit;
+    background:var(--card);color:var(--text);border:1px solid var(--border);
+    transition:border-color .2s,box-shadow .2s;
+  }
+  .contact-form textarea{resize:vertical;min-height:130px}
+  .contact-form input:focus,.contact-form textarea:focus{
+    outline:none;border-color:var(--accent);
+    box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent);
+  }
+  .contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--muted)}
+  .contact-form button{
+    padding:14px 26px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer;border:none;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:var(--shadow);
+    transition:transform .18s;
+  }
+  .contact-form button:hover{transform:translateY(-2px)}
+
   footer.foot{padding:40px 0;text-align:center;color:var(--muted);font-size:.88rem;border-top:1px solid var(--border)}
 
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
@@ -253,7 +275,27 @@
     <div class="contact">
       <h2>¿Creamos algo juntos?</h2>
       <p>Estoy disponible para comisiones, colaboraciones y proyectos. Escribime y hablemos de tu idea.</p>
-      <a href="mailto:sophiamaseda@ejemplo.com" class="btn primary">Enviame un email</a>
+
+      <!-- =========================================================
+           FORMULARIO FUNCIONAL (con FormSubmit.co, sin backend)
+           1) Cambiá el email de la linea de abajo (action=...) por el tuyo.
+           2) La PRIMERA vez que alguien envie el form, FormSubmit te manda
+              un mail para confirmar. Hacé clic en el link y listo: a partir
+              de ahi todos los mensajes te llegan a tu casilla.
+           ========================================================= -->
+      <form class="contact-form" action="https://formsubmit.co/sophiamaseda@ejemplo.com" method="POST">
+        <input type="hidden" name="_subject" value="Nuevo mensaje desde tu portfolio">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <div class="row">
+          <input type="text" name="name" placeholder="Tu nombre" required>
+          <input type="email" name="email" placeholder="Tu email" required>
+        </div>
+        <input type="text" name="asunto" placeholder="Asunto (ej. comisión de personaje)">
+        <textarea name="message" placeholder="Contame tu idea o proyecto..." required></textarea>
+        <button type="submit">Enviar mensaje</button>
+      </form>
+
       <div class="socials">
         <a href="#" aria-label="ArtStation" title="ArtStation"><svg viewBox="0 0 24 24"><path d="M0 17.7l2.4 4.1c.4.8 1.2 1.3 2.2 1.3h13.4l-3.1-5.4H0Zm24-.8c0-.5-.1-.9-.4-1.4L16.9 3.9c-.4-.8-1.3-1.4-2.3-1.4h-4.7l11 19 2.6-4.5c.4-.5.5-.7.5-1.1ZM11.6 14.5L7.3 7 3 14.5h8.6Z"/></svg></a>
         <a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.1.4.3 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.1-1 .3-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.1-.4-.3-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.1 1-.3 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 3.2A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4Zm0 10.9A4.3 4.3 0 1 1 16.3 12 4.3 4.3 0 0 1 12 16.3Zm6.9-11.2a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5Z"/></svg></a>
