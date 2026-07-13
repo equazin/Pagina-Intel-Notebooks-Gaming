@@ -148,8 +148,12 @@
 
 <script>
   // ====== CONFIG ======
-  const OWNER  = 'equazin';
-  const REPO   = 'Pagina-Intel-Notebooks-Gaming';
+  // Detecta owner/repo desde la URL, así el panel sigue funcionando aunque
+  // renombres el repositorio (no hay nada de nombre "hardcodeado").
+  const _host = location.hostname.split('.')[0];
+  const _seg  = location.pathname.split('/').filter(Boolean);
+  const OWNER  = (_host && _host !== 'localhost' && _host !== '127') ? _host : 'equazin';
+  const REPO   = (_seg[0] && !/\.html?$/.test(_seg[0])) ? _seg[0] : 'sophia-maseda-portfolio';
   const BRANCH = 'main';
   const API    = 'https://api.github.com';
 
