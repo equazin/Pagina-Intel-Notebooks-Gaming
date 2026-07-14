@@ -147,7 +147,7 @@
     <ol style="color:var(--muted);padding-left:20px;line-height:1.8">
       <li>Entrá a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a> (logueada con tu cuenta).</li>
       <li>En <b>Token name</b> poné cualquier nombre (ej: "Panel portfolio").</li>
-      <li>En <b>Repository access</b> → <b>Only select repositories</b> → elegí <code>Pagina-Intel-Notebooks-Gaming</code>.</li>
+      <li>En <b>Repository access</b> → <b>Only select repositories</b> → elegí <code id="repoName">sophia-maseda-portfolio</code>.</li>
       <li>En <b>Permissions</b> → <b>Repository permissions</b> → <b>Contents</b> → poné <b>Read and write</b>.</li>
       <li>Clic en <b>Generate token</b>, copialo y pegalo arriba. ¡Listo!</li>
     </ol>
@@ -173,7 +173,7 @@
   // ---- helpers ----
   const b64encode = str => btoa(unescape(encodeURIComponent(str)));
   const b64decode = str => decodeURIComponent(escape(atob(str.replace(/\s/g,''))));
-  const slugify = s => (s||'obra').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+  const slugify = s => (s||'obra').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
                         .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,40) || 'obra';
   const catName = c => ({personajes:'Personajes','3d':'3D',splash:'Splash Arts',diseno:'Diseño'}[c]||c);
 
@@ -191,6 +191,35 @@
   function fileToB64(file){
     return new Promise((res,rej)=>{ const r=new FileReader();
       r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+  }
+  function blobToB64(blob){
+    return new Promise((res,rej)=>{ const r=new FileReader();
+      r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(blob); });
+  }
+  // Redimensiona (máx 1800px lado más largo) y recomprime a WebP (0.88) o JPEG fallback.
+  // Si el archivo original ya es más chico que el resultado, se queda con el original.
+  async function compressImage(file, maxSide=1800){
+    try{
+      const bmp = await createImageBitmap(file);
+      const scale = Math.min(1, maxSide / Math.max(bmp.width, bmp.height));
+      const w = Math.max(1, Math.round(bmp.width * scale));
+      const h = Math.max(1, Math.round(bmp.height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(bmp, 0, 0, w, h);
+      bmp.close && bmp.close();
+      const webpOk = canvas.toDataURL('image/webp').indexOf('data:image/webp')===0;
+      const type = webpOk ? 'image/webp' : 'image/jpeg';
+      const ext  = webpOk ? 'webp' : 'jpg';
+      const blob = await new Promise(r => canvas.toBlob(r, type, 0.88));
+      if(!blob) return { blob:file, ext:(file.name.split('.').pop()||'jpg').toLowerCase() };
+      if(blob.size >= file.size && scale===1){
+        return { blob:file, ext:(file.name.split('.').pop()||'jpg').toLowerCase() };
+      }
+      return { blob, ext };
+    }catch(e){
+      return { blob:file, ext:(file.name.split('.').pop()||'jpg').toLowerCase() };
+    }
   }
   function setStatus(el, msg, type){ el.className='status'+(type?' '+type:''); el.textContent=msg; }
 
@@ -329,11 +358,12 @@
     if(!file||!titulo) return;
     $('submitBtn').disabled=true;
     try{
+      setStatus($('addStatus'),'Optimizando imagen...');
+      const { blob:imgBlob, ext } = await compressImage(file);
       setStatus($('addStatus'),'Subiendo imagen...');
-      const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
       const id=slugify(titulo)+'-'+Date.now();
       const imgPath=`assets/obras/${id}.${ext}`;
-      let res=await putFile(imgPath, await fileToB64(file), `Agregar obra: ${titulo}`);
+      let res=await putFile(imgPath, await blobToB64(imgBlob), `Agregar obra: ${titulo}`);
       if(!res.ok) throw new Error((await res.json()).message);
 
       setStatus($('addStatus'),'Guardando en la galería...');
@@ -412,6 +442,8 @@
   cropper.addEventListener('pointerup', ()=>{ cDrag=false; cropper.classList.remove('grabbing'); });
 
   // ====== INIT ======
+  // Sincronizar el nombre del repo mostrado en la ayuda con el detectado desde la URL
+  const _rn = document.getElementById('repoName'); if(_rn) _rn.textContent = REPO;
   $('setupBtn').onclick=doSetup;
   $('unlockBtn').onclick=doUnlock;
   $('resetBtn').onclick=doReset;
