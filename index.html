@@ -60,7 +60,8 @@
   header.nav{position:sticky;top:0;z-index:50;
     background:color-mix(in srgb,var(--bg) 92%,transparent);border-bottom:1px solid var(--border)}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
-  .logo{font-weight:800;letter-spacing:.2px}
+  .logo{font-weight:800;letter-spacing:.2px;display:flex;align-items:center;gap:10px}
+  .logo img{width:30px;height:30px;border-radius:8px;display:block}
   .logo span{background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
   nav.links{display:flex;gap:26px}
   nav.links a{color:var(--muted);font-weight:500;font-size:.95rem;transition:color .2s}
@@ -82,8 +83,8 @@
   .btn.ghost{background:var(--glass)}
   .hero-card{background:var(--glass);border:1px solid var(--border);border-radius:26px;padding:28px;
     box-shadow:var(--shadow)}
-  .hero-card .av{width:84px;height:84px;border-radius:22px;display:grid;place-items:center;font-weight:800;font-size:1.7rem;color:#fff;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));margin-bottom:18px;box-shadow:0 12px 30px #b14bff55}
+  .hero-card .av{width:84px;height:84px;border-radius:22px;display:block;
+    margin-bottom:18px;box-shadow:0 12px 30px #b14bff55}
   .hero-card .hc-role{color:var(--muted);font-size:.95rem;padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--border)}
   .hero-card .hc-stat{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-top:1px solid var(--border);font-size:.98rem}
   .hero-card .hc-stat:first-of-type{border-top:none}
@@ -107,8 +108,9 @@
   .tool{background:var(--glass);border:1px solid var(--border);border-radius:18px;padding:24px 16px;
     font-weight:600;text-align:center;transition:transform .25s,border-color .25s,box-shadow .25s}
   .tool:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 22px 55px #b14bff3a}
-  .tool .ic{width:44px;height:44px;border-radius:14px;margin:0 auto 13px;display:grid;place-items:center;font-size:1.3rem;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 10px 24px #b14bff44}
+  .tool .ic{width:44px;height:44px;border-radius:14px;margin:0 auto 13px;display:grid;place-items:center;
+    background:#fff;border:1px solid var(--border);box-shadow:0 10px 24px #b14bff2e}
+  .tool .ic img{width:26px;height:26px;object-fit:contain;border-radius:6px;display:block}
 
   /* ===================== GALERÍA ===================== */
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
@@ -178,7 +180,7 @@
   <!-- ===================== NAV ===================== -->
   <header class="nav">
     <div class="wrap nav-inner">
-      <div class="logo">Sophia<span> Maseda</span></div>
+      <div class="logo"><img src="favicon.svg" alt="Monograma SM">Sophia<span> Maseda</span></div>
       <nav class="links">
         <a href="#sobre">Sobre mí</a>
         <a href="#galeria">Galería</a>
@@ -201,7 +203,8 @@
       </div>
     </div>
     <div class="hero-card">
-      <div class="av">SM</div>
+      <img class="av" src="favicon.svg" alt="Monograma SM — óleo">
+
       <div class="hc-role">Artista Digital · 3D · Diseño de Personajes</div>
       <div class="hc-stat"><span>Obras creadas</span><b>+50</b></div>
       <div class="hc-stat"><span>Personajes</span><b>+15</b></div>
@@ -226,14 +229,14 @@
     <h2 class="section-title">Herramientas<span class="dot">.</span></h2>
     <p class="section-sub">El software con el que doy vida a mis obras.</p>
     <div class="tools">
-      <div class="tool"><div class="ic">🔶</div>Blender</div>
-      <div class="tool"><div class="ic">🗿</div>ZBrush</div>
-      <div class="tool"><div class="ic">🎨</div>Substance Painter</div>
-      <div class="tool"><div class="ic">🖌️</div>Photoshop</div>
-      <div class="tool"><div class="ic">✏️</div>Clip Studio Paint</div>
-      <div class="tool"><div class="ic">🖼️</div>Procreate</div>
-      <div class="tool"><div class="ic">💡</div>Marmoset Toolbag</div>
-      <div class="tool"><div class="ic">🧊</div>Maya</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/blender.svg" alt="" loading="lazy"></div>Blender</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/zbrush.png" alt="" loading="lazy"></div>ZBrush</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/substance.svg" alt="" loading="lazy"></div>Substance Painter</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/photoshop.svg" alt="" loading="lazy"></div>Photoshop</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/clipstudio.png" alt="" loading="lazy"></div>Clip Studio Paint</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/procreate.png" alt="" loading="lazy"></div>Procreate</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/marmoset.png" alt="" loading="lazy"></div>Marmoset Toolbag</div>
+      <div class="tool"><div class="ic"><img src="assets/logos/maya.svg" alt="" loading="lazy"></div>Maya</div>
     </div>
   </section>
 
