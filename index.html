@@ -62,12 +62,6 @@
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
   .logo{display:flex;align-items:center}
   .logo img{width:clamp(132px,15vw,150px);height:auto;display:block}
-  :root[data-theme="light"] .logo img,
-  :root[data-theme="light"] .hero-logo{filter:invert(1)}
-  @media (prefers-color-scheme: light){
-    :root[data-theme="auto"] .logo img,
-    :root[data-theme="auto"] .hero-logo{filter:invert(1)}
-  }
   nav.links{display:flex;gap:26px}
   nav.links a{color:var(--muted);font-weight:500;font-size:.95rem;transition:color .2s}
   nav.links a:hover{color:var(--text)}
