@@ -8,7 +8,7 @@
 <meta property="og:title" content="Sophia Maseda — Artista Digital &amp; 3D">
 <meta property="og:description" content="Diseño de personajes, arte 3D, splash arts e ilustración.">
 <meta property="og:type" content="website">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/brand/sophia-maseda-icon.png">
 
 <style>
   /* ===========================================================
@@ -60,9 +60,14 @@
   header.nav{position:sticky;top:0;z-index:50;
     background:color-mix(in srgb,var(--bg) 92%,transparent);border-bottom:1px solid var(--border)}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
-  .logo{font-weight:800;letter-spacing:.2px;display:flex;align-items:center;gap:10px}
-  .logo img{width:30px;height:30px;border-radius:8px;display:block}
-  .logo span{background:linear-gradient(120deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .logo{display:flex;align-items:center}
+  .logo img{width:clamp(132px,15vw,150px);height:auto;display:block}
+  :root[data-theme="light"] .logo img,
+  :root[data-theme="light"] .hero-logo{filter:invert(1)}
+  @media (prefers-color-scheme: light){
+    :root[data-theme="auto"] .logo img,
+    :root[data-theme="auto"] .hero-logo{filter:invert(1)}
+  }
   nav.links{display:flex;gap:26px}
   nav.links a{color:var(--muted);font-weight:500;font-size:.95rem;transition:color .2s}
   nav.links a:hover{color:var(--text)}
@@ -83,8 +88,7 @@
   .btn.ghost{background:var(--glass)}
   .hero-card{background:var(--glass);border:1px solid var(--border);border-radius:26px;padding:28px;
     box-shadow:var(--shadow)}
-  .hero-card .av{width:84px;height:84px;border-radius:22px;display:block;
-    margin-bottom:18px;box-shadow:0 12px 30px #b14bff55}
+  .hero-card .hero-logo{width:min(230px,80%);height:auto;display:block;margin-bottom:22px}
   .hero-card .hc-role{color:var(--muted);font-size:.95rem;padding-bottom:14px;margin-bottom:6px;border-bottom:1px solid var(--border)}
   .hero-card .hc-stat{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-top:1px solid var(--border);font-size:.98rem}
   .hero-card .hc-stat:first-of-type{border-top:none}
@@ -173,7 +177,7 @@
   <!-- ===================== NAV ===================== -->
   <header class="nav">
     <div class="wrap nav-inner">
-      <div class="logo"><img src="favicon.svg" alt="Monograma SM">Sophia<span> Maseda</span></div>
+      <a class="logo" href="index.html" aria-label="Inicio — Sophia Maseda"><img src="assets/brand/sophia-maseda-logo.png" alt="Sophia Maseda"></a>
       <nav class="links">
         <a href="#sobre">Sobre mí</a>
         <a href="#galeria">Galería</a>
@@ -196,7 +200,7 @@
       </div>
     </div>
     <div class="hero-card">
-      <img class="av" src="favicon.svg" alt="Monograma SM — óleo">
+      <img class="hero-logo" src="assets/brand/sophia-maseda-logo.png" alt="Sophia Maseda">
 
       <div class="hc-role">Artista Digital · 3D · Diseño de Personajes</div>
       <div class="hc-stat"><span>Obras creadas</span><b>+50</b></div>

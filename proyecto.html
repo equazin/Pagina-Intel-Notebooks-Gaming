@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proyecto — Sophia Maseda</title>
 <meta name="description" content="Proyecto de arte digital y 3D de Sophia Maseda.">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/brand/sophia-maseda-icon.png">
 <style>
   :root{
     --accent:#b14bff;--accent-2:#ff5fa2;--bg:#0c0910;--bg-soft:#15111c;
@@ -23,9 +23,8 @@
   .wrap{width:min(100% - 40px,var(--max));margin-inline:auto}
   .nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);border-bottom:1px solid var(--border)}
   .nav__inner{min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800}
-  .brand img{width:30px;height:30px;border-radius:8px}
-  .brand span{background:linear-gradient(120deg,var(--accent),var(--accent-2));background-clip:text;color:transparent}
+  .brand{display:flex;align-items:center;text-decoration:none}
+  .brand img{width:clamp(132px,18vw,150px);height:auto;display:block}
   .back{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid var(--border);border-radius:999px;text-decoration:none;color:var(--muted)}
   .back:hover{color:var(--text);border-color:var(--accent)}
   .project{padding:72px 0 110px}
@@ -52,7 +51,6 @@
   .foot{padding:36px 0;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:.88rem}
   @media(max-width:640px){
     .wrap{width:min(100% - 32px,var(--max))}
-    .brand>span:first-of-type{display:none}
     .project{padding-top:48px}
     .project__cover{margin-bottom:58px;border-radius:18px}
     .project__sequence{gap:52px}
@@ -65,8 +63,7 @@
   <header class="nav">
     <div class="wrap nav__inner">
       <a class="brand" href="index.html#galeria" aria-label="Volver al portfolio de Sophia Maseda">
-        <img src="favicon.svg" alt="">
-        <span>Sophia</span><span> Maseda</span>
+        <img src="assets/brand/sophia-maseda-logo.png" alt="Sophia Maseda">
       </a>
       <a class="back" href="index.html#galeria">← Volver a la galería</a>
     </div>
