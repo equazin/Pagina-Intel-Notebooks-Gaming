@@ -30,10 +30,30 @@ jobs:
         with:
           enablement: true
 
+      - name: Preparar sitio publicable
+        run: |
+          mkdir _site
+          rsync -a \
+            --exclude='.git' \
+            --exclude='_site' \
+            --exclude='docs' \
+            --exclude='tests' \
+            --exclude='scripts' \
+            --exclude='package.json' \
+            ./ _site/
+
+      - name: Instalar FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+
+      - name: Optimizar loops de video
+        run: node scripts/process-media.mjs --root _site
+
       - name: Subir el sitio
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy
         id: deployment

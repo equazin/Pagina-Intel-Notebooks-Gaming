@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyecto — Sophia Maseda</title>
+<meta name="description" content="Proyecto de arte digital y 3D de Sophia Maseda.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+  :root{
+    --accent:#b14bff;--accent-2:#ff5fa2;--bg:#0c0910;--bg-soft:#15111c;
+    --card:#1a1522;--text:#f3eefb;--muted:#a99cba;--border:rgba(255,255,255,.12);
+    --max:1040px;--reading:68ch;font-synthesis:none
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.42;background:radial-gradient(52% 52% at 12% 4%,#b14bff77 0%,#b14bff22 48%,transparent 74%),radial-gradient(48% 48% at 88% 10%,#ff5fa266 0%,#ff5fa222 45%,transparent 72%)}
+  a{color:inherit}
+  img,video{display:block;max-width:100%}
+  button,a{font:inherit}
+  :focus-visible{outline:3px solid var(--accent-2);outline-offset:4px}
+  .wrap{width:min(100% - 40px,var(--max));margin-inline:auto}
+  .nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);border-bottom:1px solid var(--border)}
+  .nav__inner{min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800}
+  .brand img{width:30px;height:30px;border-radius:8px}
+  .brand span{background:linear-gradient(120deg,var(--accent),var(--accent-2));background-clip:text;color:transparent}
+  .back{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid var(--border);border-radius:999px;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--text);border-color:var(--accent)}
+  .project{padding:72px 0 110px}
+  .project__eyebrow{margin:0 0 14px;color:var(--muted);font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .project h1{max-width:16ch;margin:0;font-size:clamp(2.5rem,7vw,5.4rem);line-height:1;letter-spacing:-.035em;text-wrap:balance;hyphens:none}
+  .project__description{max-width:var(--reading);margin:24px 0 36px;color:var(--muted);font-size:clamp(1rem,2vw,1.2rem)}
+  .project__cover{margin:0 0 80px;border:1px solid var(--border);border-radius:24px;overflow:hidden;background:var(--card)}
+  .project__cover img{width:100%;max-height:78vh;object-fit:contain;margin:auto}
+  .project__intro{margin-bottom:42px}
+  .project__intro h2{margin:0 0 8px;font-size:clamp(1.7rem,4vw,2.5rem);letter-spacing:-.025em;hyphens:none}
+  .project__intro p{max-width:var(--reading);margin:0;color:var(--muted)}
+  .project__sequence{display:grid;gap:72px}
+  .project-media{margin:0;display:grid;gap:16px}
+  .project-media__asset{overflow:hidden;border:1px solid var(--border);border-radius:22px;background:var(--card)}
+  .project-media img,.project-media video{width:100%;max-height:86vh;object-fit:contain;margin:auto;background:#08060b}
+  .project-media figcaption{max-width:var(--reading)}
+  .project-media h3{margin:0 0 5px;font-size:1.2rem;hyphens:none}
+  .project-media p{margin:0;color:var(--muted)}
+  .project-empty{min-height:60vh;display:grid;place-content:center;text-align:center}
+  .project-empty h1{font-size:2rem;margin:0 0 8px}
+  .project-empty p{color:var(--muted);margin:0 0 24px}
+  .project-empty a{justify-self:center}
+  .placeholder{min-height:56vh;display:grid;place-items:center;font-size:clamp(4rem,16vw,9rem)}
+  .foot{padding:36px 0;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:.88rem}
+  @media(max-width:640px){
+    .wrap{width:min(100% - 32px,var(--max))}
+    .brand>span:first-of-type{display:none}
+    .project{padding-top:48px}
+    .project__cover{margin-bottom:58px;border-radius:18px}
+    .project__sequence{gap:52px}
+    .project-media__asset{border-radius:16px}
+  }
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a class="brand" href="index.html#galeria" aria-label="Volver al portfolio de Sophia Maseda">
+        <img src="favicon.svg" alt="">
+        <span>Sophia</span><span> Maseda</span>
+      </a>
+      <a class="back" href="index.html#galeria">← Volver a la galería</a>
+    </div>
+  </header>
+
+  <main id="project" class="project wrap" aria-live="polite"></main>
+
+  <footer class="foot">
+    <div class="wrap">&copy;&nbsp;<span id="year"></span> Sophia Maseda</div>
+  </footer>
+
+<script>
+  const projectRoot = document.getElementById('project');
+  const projectId = new URLSearchParams(location.search).get('id');
+  const categoryNames = { personajes:'Personajes', '3d':'3D', splash:'Splash Arts', diseno:'Diseño' };
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const getProjectMedia = project => {
+    if(Array.isArray(project.medios) && project.medios.length) return project.medios;
+    if(project.img) return [{ tipo:'imagen', src:project.img, titulo:project.titulo, descripcion:project.descripcion, esPortada:true }];
+    return [];
+  };
+
+  const appendText = (parent, tagName, text, className='') => {
+    if(!text) return null;
+    const element = document.createElement(tagName);
+    element.textContent = text;
+    if(className) element.className = className;
+    parent.appendChild(element);
+    return element;
+  };
+
+  const createImage = (media, project, index) => {
+    const image = document.createElement('img');
+    image.src = media.src;
+    image.alt = media.alt || media.titulo || `${project.titulo} — imagen ${index + 1}`;
+    image.loading = index > 0 ? 'lazy' : 'eager';
+    image.decoding = 'async';
+    return image;
+  };
+
+  const createVideo = (media, project, index) => {
+    const video = document.createElement('video');
+    video.loop = true;
+    video.muted = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.controls = true;
+    video.preload = index === 0 ? 'metadata' : 'none';
+    video.setAttribute('aria-label', media.titulo || `${project.titulo} — video ${index + 1}`);
+
+    for(const sourcePath of [media.src, media.original]){
+      if(!sourcePath) continue;
+      const source = document.createElement('source');
+      source.src = sourcePath;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+    }
+
+    video.append('Tu navegador no puede reproducir este video.');
+    return video;
+  };
+
+  const renderNotFound = () => {
+    projectRoot.className = 'project-empty wrap';
+    appendText(projectRoot, 'h1', 'Proyecto no encontrado');
+    appendText(projectRoot, 'p', 'El enlace puede estar incompleto o el proyecto ya no está disponible.');
+    const link = document.createElement('a');
+    link.className = 'back';
+    link.href = 'index.html#galeria';
+    link.textContent = 'Volver a la galería';
+    projectRoot.appendChild(link);
+  };
+
+  const renderProject = project => {
+    const mediaItems = getProjectMedia(project);
+    const cover = project.portada || project.img || mediaItems.find(item => item.tipo === 'imagen')?.src;
+    const sequenceItems = mediaItems.filter(item => !(item.tipo === 'imagen' && item.src === cover && (item.esPortada || mediaItems.length === 1)));
+    const eyebrow = categoryNames[project.categoria] || project.categoria || 'Proyecto';
+
+    document.title = `${project.titulo} — Sophia Maseda`;
+    document.querySelector('meta[name="description"]').content = project.descripcion || `Proyecto ${project.titulo} de Sophia Maseda.`;
+
+    const header = document.createElement('header');
+    header.className = 'project__intro';
+    appendText(header, 'p', eyebrow, 'project__eyebrow');
+    appendText(header, 'h1', project.titulo || 'Proyecto sin título');
+    appendText(header, 'p', project.descripcion, 'project__description');
+    projectRoot.appendChild(header);
+
+    if(cover){
+      const coverFigure = document.createElement('figure');
+      coverFigure.className = 'project__cover';
+      coverFigure.appendChild(createImage({ src:cover, alt:`Portada de ${project.titulo}` }, project, 0));
+      projectRoot.appendChild(coverFigure);
+    }else if(project.emoji){
+      const placeholder = document.createElement('div');
+      placeholder.className = 'project__cover placeholder';
+      placeholder.textContent = project.emoji;
+      projectRoot.appendChild(placeholder);
+    }
+
+    if(!sequenceItems.length) return;
+
+    const sequenceIntro = document.createElement('div');
+    sequenceIntro.className = 'project__intro';
+    appendText(sequenceIntro, 'h2', 'Proceso y detalles');
+    appendText(sequenceIntro, 'p', 'Una mirada al desarrollo del proyecto, desde sus primeras decisiones hasta la presentación final.');
+    projectRoot.appendChild(sequenceIntro);
+
+    const sequence = document.createElement('div');
+    sequence.className = 'project__sequence';
+
+    sequenceItems.forEach((media, index) => {
+      const figure = document.createElement('figure');
+      figure.className = 'project-media';
+      const asset = document.createElement('div');
+      asset.className = 'project-media__asset';
+      asset.appendChild(media.tipo === 'video' ? createVideo(media, project, index) : createImage(media, project, index));
+      figure.appendChild(asset);
+
+      if(media.titulo || media.descripcion){
+        const caption = document.createElement('figcaption');
+        appendText(caption, 'h3', media.titulo);
+        appendText(caption, 'p', media.descripcion);
+        figure.appendChild(caption);
+      }
+
+      sequence.appendChild(figure);
+    });
+
+    projectRoot.appendChild(sequence);
+  };
+
+  fetch(`obras.json?t=${Date.now()}`)
+    .then(response => response.ok ? response.json() : [])
+    .then(projects => {
+      const project = Array.isArray(projects) ? projects.find(item => item.id === projectId) : null;
+      if(!project) return renderNotFound();
+      renderProject(project);
+    })
+    .catch(renderNotFound);
+</script>
+</body>
+</html>
